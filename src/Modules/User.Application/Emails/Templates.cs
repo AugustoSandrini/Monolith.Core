@@ -4,7 +4,7 @@ namespace User.Application.Emails
 {
     public static class Templates
     {
-        public sealed class CreditConsultation() : EmailTemplate("cartaosimples/credit-consultation.html");
-        public sealed class CreditAnalysis() : EmailTemplate("cartaosimples/credit-analysis.html");
+        public sealed class CreditConsultation() : EmailTemplate("caminho-email");
+        public sealed class CreditAnalysis() : EmailTemplate("caminho-email");
     }
 }

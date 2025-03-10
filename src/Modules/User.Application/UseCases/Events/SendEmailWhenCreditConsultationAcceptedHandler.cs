@@ -63,8 +63,8 @@ namespace User.Application.UseCases.Events
         private List<string> GetEmailAddressesByEnvironment()
             => environment.Value.EnvironmentName switch
             {
-                "PRODUCTION" => ["mesadecredito@moneyp.com.br", "tamires.anjos@twila.digital"],
-                "STAGING" => ["tamires.anjos@twila.digital"],
+                "PRODUCTION" => ["emaisl"],
+                "STAGING" => ["emails"],
                 _ => [""],
             };
     }

@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup Label="Common properties">
     <Product>Core</Product>
-    <Copyright>Copyright (c) 2024 - Twila.</Copyright>
+    <Copyright>Copyright (c) 2024 - AugustoSandrini.</Copyright>
     <Authors>Augusto Sandrini.</Authors>
     <TargetFramework>net8.0</TargetFramework>
     <LangVersion>preview</LangVersion>
@@ -24,8 +24,10 @@
     <!--Asp.Versioning-->
     <PackageVersion Include="Asp.Versioning.Http" Version="8.1.0" />
     <PackageVersion Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
+    <PackageVersion Include="AspNetCore.HealthChecks.MongoDb" Version="9.0.0" />
     <PackageVersion Include="AspNetCore.HealthChecks.NpgSql" Version="8.0.2" />
     <PackageVersion Include="AspNetCore.HealthChecks.UI" Version="8.0.2" />
+    <PackageVersion Include="AspNetCore.HealthChecks.UI.Client" Version="9.0.0" />
     <PackageVersion Include="AspNetCore.HealthChecks.UI.Core" Version="8.0.1" />
     <PackageVersion Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="8.0.1" />
     <PackageVersion Include="AspNetCore.HealthChecks.UI.PostgreSQL.Storage" Version="8.0.1" />
@@ -56,12 +58,12 @@
     <PackageVersion Include="MassTransit.RabbitMQ" Version="8.3.6" />
     <!--MediatR-->
     <PackageVersion Include="MediatR" Version="12.4.1" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.13" />
     <!--Microsoft.AspNetCore-->
     <PackageVersion Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.11" />
-    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.1.0" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="8.0.11" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.11" />
@@ -71,11 +73,12 @@
     <!--Microsoft.Extensions-->
     <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
-    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.13" />
+    <PackageVersion Include="Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions" Version="8.0.13" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <!--MongoDB-->
     <PackageVersion Include="MongoDB.Driver" Version="3.2.1" />
     <!--Newtonsoft-->
@@ -103,6 +106,7 @@
     <!--Swashbuckle-->
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="7.3.1" />
     <PackageVersion Include="Swashbuckle.AspNetCore.Annotations" Version="7.3.1" />
+    <PackageVersion Include="Swashbuckle.AspNetCore.SwaggerUI" Version="7.3.1" />
     <!--System-->
     <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.6.0" />
   </ItemGroup>

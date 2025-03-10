@@ -1,0 +1,16 @@
+﻿using WebBff.Middlewares;
+
+namespace WebBff.Extensions;
+
+public static class MiddlewareExtensions
+{
+    public static IServiceCollection AddMiddlewares(this IServiceCollection services)
+        => services.Configure<ContentValidationOptions>(options =>
+           {
+                options.ContentValidation = @"""event"":{""type"":""test""";
+                options.Path = "/webhooks/vindi";
+           });
+
+    public static IApplicationBuilder UseMiddlewares(this IApplicationBuilder app)
+        => app.UseMiddleware<ContentValidationMiddleware>();
+}

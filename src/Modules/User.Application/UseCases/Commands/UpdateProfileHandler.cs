@@ -23,7 +23,7 @@ namespace User.Application.UseCases.Commands
         //IAuth0ApiClient auth0ApiService,
         ILogger logger) : ICommandHandler<UpdateProfileCommand>
     {
-        public const string CONNECTION_TYPE = "CartaoSimplesUser";
+        //public const string CONNECTION_TYPE = "User";
 
         public async Task<Result> Handle(UpdateProfileCommand cmd, CancellationToken cancellationToken)
         {

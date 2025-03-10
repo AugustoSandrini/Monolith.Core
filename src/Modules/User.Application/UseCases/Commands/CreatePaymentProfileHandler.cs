@@ -59,7 +59,7 @@ namespace User.Application.UseCases.Commands
             //}
         }
 
-        //private async Task<Result<IdentifierResponse>> ProcessDebtSettlement(ISender sender, CreatePaymentProfileCommand cmd, User User, Twila.Vindi.Services.Results.IncludePaymentProfileResult vindiResponse, CancellationToken cancellationToken)
+        //private async Task<Result<IdentifierResponse>> ProcessDebtSettlement(ISender sender, CreatePaymentProfileCommand cmd, User User, IncludePaymentProfileResult vindiResponse, CancellationToken cancellationToken)
         //{
         //    var overdueBillsResult = await sender.Send(new ListFrozenOrderBillsByUserIdQuery(cmd.UserId), cancellationToken);
 
