@@ -5,6 +5,6 @@ namespace Common.Options
     public record DiscordWebHooksOptions
     {
         [Required, Url]
-        public string EstablishmentWebHookUrl { get; set; }
+        public string UrlWebHookUrl { get; set; }
     }
 }
