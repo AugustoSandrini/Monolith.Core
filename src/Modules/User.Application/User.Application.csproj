@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<Content Include="../../../../emails/**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="DocsBRValidator" />
+		<PackageReference Include="MediatR" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Common\Common.csproj" />
+	  <ProjectReference Include="..\..\Core\Core.Application\Core.Application.csproj" />
+	  <ProjectReference Include="..\User.Domain\User.Domain.csproj" />
+	  <ProjectReference Include="..\User.Persistence\User.Persistence.csproj" />
+	  <ProjectReference Include="..\User.Shared\User.Shared.csproj" />
+	</ItemGroup>
+
+
+</Project>
