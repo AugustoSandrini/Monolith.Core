@@ -1,4 +1,4 @@
-﻿using Core.Domain.Primitives;
+using Core.Domain.Primitives;
 using User.Domain.Entities;
 using User.Domain.Enumerations;
 using User.Domain.ValueObjects;
@@ -15,10 +15,6 @@ public class User : AggregateRoot
     public UserStatus Status { get; private set; }
     public Address Address { get; private set; }
     public DateTimeOffset DateOfBirth { get; private set; }
-    public DateTimeOffset? LastTokenSentAt { get; private set; }
-    public string VindiExternalId { get; private set; }
-    public List<PaymentProfile> PaymentProfiles { get; private set; } = [];
-    public List<CreditConsultation> CreditConsultations { get; private set; } = [];
 
     public static User Create(Guid UserId, string document, string phone)
     {
