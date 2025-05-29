@@ -59,42 +59,8 @@ public class User : AggregateRoot
     public void UpsertAddress(Dto.Address address)
        => RaiseEvent<DomainEvent.AddressUpserted>(version => new(Id, address, version));
 
-    public Guid CreatePaymentProfile(string gatewayToken, int externalId)
-    {
-        var id = Guid.NewGuid();
-
-        RaiseEvent<DomainEvent.PaymentProfileCreated>(version
-            => new(id, Id, gatewayToken, true, externalId, DateTimeOffset.Now, version));
-
-        return id;
-    }
-
-    public void LinkExternalId(string vindiExternalId)
-        => RaiseEvent<DomainEvent.UserVindiExternalIdLinked>(version => new(Id, vindiExternalId, version));
-
     public void Delete()
         => RaiseEvent<DomainEvent.UserDeleted>(version => new(Id, version));
-
-    public Guid CreateCreditConsultation(Guid orderId)
-    {
-        var id = Guid.NewGuid();
-
-        RaiseEvent<DomainEvent.CreditConsultationCreated>(version => new(id, Id, orderId, DateTimeOffset.Now, version));
-
-        return id;
-    }
-
-    public void AcceptCreditConsultation(Guid id, Guid orderId, string decisionIp)
-        => RaiseEvent<DomainEvent.CreditConsultationAccepted>(version => new(id, orderId, decisionIp, DateTimeOffset.Now, DateTimeOffset.Now.AddDays(30), version));
-
-    public void RefuseCreditConsultation(Guid id, Guid orderId, string decisionIp)
-        => RaiseEvent<DomainEvent.CreditConsultationRefused>(version => new(id, orderId, decisionIp, DateTimeOffset.Now, version));
-
-    public void ExpireCreditConsultation(Guid creditConsultationId, Guid OrderId)
-        => RaiseEvent<DomainEvent.CreditConsultationExpired>(version => new(creditConsultationId, OrderId, DateTimeOffset.Now, version));
-
-    public void UpdateLastTokenSentAt()
-        => RaiseEvent<DomainEvent.LastTokenSentAtUpdated>(version => new(Id, DateTimeOffset.Now, version));
 
     protected override void ApplyEvent(IDomainEvent @event)
         => When(@event as dynamic);
@@ -124,26 +90,8 @@ public class User : AggregateRoot
     private void When(DomainEvent.AddressUpserted @event)
         => Address = Address.Create(@event.Address);
 
-    private void When(DomainEvent.UserVindiExternalIdLinked @event)
-        => VindiExternalId = @event.VindiExternalId;
-
     private void When(DomainEvent.UserDeleted _)
         => IsDeleted = true;
-
-    private void When(DomainEvent.CreditConsultationCreated @event)
-        => CreditConsultations.Add(CreditConsultation.Create(@event.CreditConsultationId, @event.OrderId));
-
-    private void When(DomainEvent.CreditConsultationAccepted @event)
-        => CreditConsultations.First(x => x.Id == @event.CreditConsultationId).Accept(@event.DecisionIp, @event.ExpireAt, @event.DecidedAt);
-
-    private void When(DomainEvent.CreditConsultationRefused @event)
-        => CreditConsultations.First(x => x.Id == @event.CreditConsultationId).Refuse(@event.DecisionIp, @event.DecidedAt);
-
-    private void When(DomainEvent.CreditConsultationExpired @event)
-        => CreditConsultations.First(x => x.Id == @event.CreditConsultationId).Expire();
-
-    private void When(DomainEvent.LastTokenSentAtUpdated @event)
-        => LastTokenSentAt = @event.SentAt;
 
     private void When(DomainEvent.UserDefaulterStatus @event)
         => Status = @event.Status;
