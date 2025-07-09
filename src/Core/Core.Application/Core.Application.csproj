@@ -9,6 +9,7 @@
 	<ItemGroup>
 		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
 		<PackageReference Include="Hangfire.AspNetCore" />
+		<PackageReference Include="Hangfire.MySqlStorage" />
 		<PackageReference Include="Hangfire.PostgreSql" />
 		<PackageReference Include="Hangfire" />
 		<PackageReference Include="MediatR" />

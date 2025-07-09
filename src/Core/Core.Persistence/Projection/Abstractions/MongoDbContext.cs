@@ -8,19 +8,17 @@ namespace Core.Persistence.Projection.Abstractions
         public readonly IMongoClient _mongoClient;
         public readonly IMongoDatabase _database;
 
-        protected MongoDbContext(string connectionString)
+        protected MongoDbContext(string connectionString, string databaseName)
         {
-            MongoUrl mongoUrl = new(connectionString);
-
-            MongoClientSettings settings = MongoClientSettings.FromUrl(mongoUrl);
+            MongoClientSettings settings = MongoClientSettings.FromConnectionString(connectionString);
 
             settings.SslSettings = new SslSettings
             {
-                EnabledSslProtocols = SslProtocols.Tls13
+                EnabledSslProtocols = SslProtocols.Tls12
             };
 
             _mongoClient = new MongoClient(settings);
-            _database = _mongoClient.GetDatabase(mongoUrl.DatabaseName);
+            _database = _mongoClient.GetDatabase(databaseName);
         }
 
         public IMongoClient MongoClient => _mongoClient;

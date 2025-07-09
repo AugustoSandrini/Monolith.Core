@@ -26,28 +26,24 @@ namespace User.Application.UseCases.Commands
         public async Task<Result> Handle(UpdateProfileCommand cmd, CancellationToken cancellationToken)
         {
             var UserProjection = await UserProjectionGateway.FindAsync(User => User.Document == cmd.Document.RemoveNonAlphaNumericCharacters(), cancellationToken);
-            if (UserProjection is null)
-                return Result.Failure(new NotFoundError(DomainError.UserNotFound));
+
+            if (UserProjection is null) return Result.Failure(new NotFoundError(DomainError.UserNotFound));
             
-            if(UserProjection.Status != UserStatus.Blocked)
-                return Result.Failure(new ConflictError(DomainError.UserStatusNowAllowed));
+            if(UserProjection.Status != UserStatus.Default) return Result.Failure(new ConflictError(DomainError.UserStatusNowAllowed));
 
             var validationResult = await ValidateUserEmailAsync(cmd.Email, UserProjection.Id, cancellationToken);
 
-            if (validationResult.IsFailure)
-                return Result.Failure(validationResult.Error);
+            if (validationResult.IsFailure) return Result.Failure(validationResult.Error);
 
-            var UserResult = await applicationService.LoadAggregateAsync<User>(UserProjection.Id, cancellationToken); ;
+            var UserResult = await applicationService.LoadAggregateAsync<User>(UserProjection.Id, cancellationToken);
 
-            if(UserResult.IsFailure)
-                return Result.Failure(UserResult.Error);
+            if(UserResult.IsFailure) return Result.Failure(UserResult.Error);
 
             var User = UserResult.Value;
 
             var userIncluded = await IncludeAuth0UserAsync(cmd, User.Id.ToString(), cancellationToken);
 
-            if (userIncluded.IsFailure)
-                return Result.Failure(userIncluded.Error);
+            if (userIncluded.IsFailure) return Result.Failure(userIncluded.Error);
 
             User.UpdateProfile(cmd.Name, cmd.Email, cmd.DateOfBirth);
 

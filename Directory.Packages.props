@@ -46,6 +46,7 @@
     <PackageVersion Include="FluentValidation" Version="11.7.1" />
     <PackageVersion Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+    <PackageVersion Include="Hangfire.MySqlStorage" Version="2.0.3" />
     <!--JsonNet-->
     <PackageVersion Include="JsonNet.ContractResolvers" Version="2.0.0" />
     <PackageVersion Include="Masking.Serilog" Version="1.0.13" />
@@ -89,6 +90,7 @@
     <PackageVersion Include="Hangfire.PostgreSQL" Version="1.20.10" />
     <PackageVersion Include="Hangfire.AspNetCore" Version="1.8.18" />
     <PackageVersion Include="Hangfire" Version="1.8.18" />
+    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.3" />
     <!--Scrutor-->
     <PackageVersion Include="Scrutor" Version="6.0.1" />
     <PackageVersion Include="Serilog" Version="4.2.0" />

@@ -17,7 +17,6 @@ namespace User.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("Users")
                 .HasAnnotation("ProductVersion", "8.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
@@ -26,30 +25,30 @@ namespace User.Persistence.Migrations
             modelBuilder.Entity("Core.Domain.EventStore.Snapshot<User.Domain.Aggregates.User>", b =>
                 {
                     b.Property<decimal>("Version")
-                        .HasColumnType("numeric(20,0)");
+                        .HasColumnType("decimal(20,0)");
 
                     b.Property<Guid>("AggregateId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Aggregate")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTimeOffset>("Timestamp")
+                        .HasColumnType("timestamp");
 
                     b.HasKey("Version", "AggregateId");
 
-                    b.ToTable("UserSnapshots", "Users");
+                    b.ToTable("UserSnapshots");
                 });
 
             modelBuilder.Entity("Core.Domain.EventStore.StoreEvent<User.Domain.Aggregates.User>", b =>
                 {
                     b.Property<decimal>("Version")
-                        .HasColumnType("numeric(20,0)");
+                        .HasColumnType("decimal(20,0)");
 
                     b.Property<Guid>("AggregateId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Event")
                         .IsRequired()
@@ -59,14 +58,14 @@ namespace User.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("varchar(50)");
 
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTimeOffset>("Timestamp")
+                        .HasColumnType("timestamp");
 
                     b.HasKey("Version", "AggregateId");
 
-                    b.ToTable("UserStoreEvents", "Users");
+                    b.ToTable("UserStoreEvents");
                 });
 #pragma warning restore 612, 618
         }

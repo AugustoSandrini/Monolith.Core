@@ -3,5 +3,5 @@ using User.Shared.Responses;
 
 namespace User.Shared.Commands
 {
-    public record CreateUserCommand(Guid UserId, string Document, string Phone, string Email) : ICommand<IdentifierResponse>;
+    public record CreateUserCommand(string Document, string Phone) : ICommand<IdentifierResponse>;
 }

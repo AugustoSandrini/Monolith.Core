@@ -1,8 +1,9 @@
 ﻿using Core.Application.Services;
 using Core.Infrastructure.Configuration;
 using Hangfire;
-using Hangfire.PostgreSql;
+using Hangfire.MySql;
 using Newtonsoft.Json;
+using System.Transactions;
 
 namespace WebBff.ServiceInstallers.BackgroundJobs;
 
@@ -21,30 +22,30 @@ internal sealed class BackgroundJobsServiceInstaller : IServiceInstaller
              .UseSimpleAssemblyNameTypeSerializer()
              .UseRecommendedSerializerSettings()
              .UseSerializerSettings(new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore })
-             .UsePostgreSqlStorage(options =>
-             {
-                 options.UseNpgsqlConnection(configuration.GetConnectionString("Hangfire"));
-             },
-             new PostgreSqlStorageOptions
-             {
-                 SchemaName = "hangfire",
-                 PrepareSchemaIfNecessary = true,
-                 QueuePollInterval = TimeSpan.FromSeconds(15),
-                 JobExpirationCheckInterval = TimeSpan.FromHours(12),
-                 DistributedLockTimeout = TimeSpan.FromMinutes(1),
-                 InvisibilityTimeout = TimeSpan.FromMinutes(5),
-                 UseNativeDatabaseTransactions = true
-             });
+             .UseStorage(new MySqlStorage(
+                 configuration.GetConnectionString("Hangfire"),
+                 new MySqlStorageOptions
+                 {
+                     TransactionIsolationLevel = IsolationLevel.ReadCommitted,
+                     QueuePollInterval = TimeSpan.FromSeconds(15),
+                     JobExpirationCheckInterval = TimeSpan.FromHours(12),
+                     CountersAggregateInterval = TimeSpan.FromMinutes(5),
+                     PrepareSchemaIfNecessary = true,
+                     DashboardJobListLimit = 50000,
+                     TransactionTimeout = TimeSpan.FromMinutes(1),
+                     TablesPrefix = "Hangfire"
+                 }));
+
             var jsonSettings = new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.All
             };
             x.UseSerializerSettings(jsonSettings);
         });
-    
+
         services.AddHangfireServer(options =>
         {
-            options.WorkerCount = Math.Min(Environment.ProcessorCount* Convert.ToUInt16(3), Convert.ToUInt16(10));
+            options.WorkerCount = Math.Min(Environment.ProcessorCount * Convert.ToUInt16(3), Convert.ToUInt16(10));
         });
 
         services.AddScoped<IJobSchedulerService, JobSchedulerService>();

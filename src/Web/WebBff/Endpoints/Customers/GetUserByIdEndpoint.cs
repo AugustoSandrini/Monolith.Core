@@ -28,7 +28,7 @@ namespace WebBff.Endpoints.Customers
             Summary = "Get User By UserId",
             Description = "Get User By UserId based on the provided request data.",
             Tags = [Tags.Users])]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = Policies.User)]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public override async Task<ActionResult<UserResponse>> HandleAsync(
         GetUserByIdRequest request,
         CancellationToken cancellationToken = default) =>

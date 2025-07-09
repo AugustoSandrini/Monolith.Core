@@ -2,7 +2,7 @@
 
 namespace WebBff.Handlers.Options
 {
-    public abstract record BasicAuthenticationOptions
+    public record BasicAuthenticationOptions
     {
         [Required]
         public string Username { get; set; }

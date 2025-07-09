@@ -5,6 +5,7 @@ using Serilog;
 
 namespace User.Application.UseCases.Events
 {
+    using User.Application.Extensions;
     using User.Domain.Aggregates;
     using User.Persistence.Projections;
 
@@ -24,7 +25,7 @@ namespace User.Application.UseCases.Events
                 await UserProjection.ReplaceInsertAsync(new(
                     @event.UserId,
                     string.Empty,
-                    @event.Document,
+                    @event.Document.RemoveNonAlphaNumericCharacters(),
                     @event.Status,
                     null,
                     DateTimeOffset.MinValue,

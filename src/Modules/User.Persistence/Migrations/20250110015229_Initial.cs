@@ -10,18 +10,14 @@ namespace User.Persistence.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.EnsureSchema(
-                name: "Users");
-
             migrationBuilder.CreateTable(
                 name: "UserSnapshots",
-                schema: "Users",
                 columns: table => new
                 {
-                    AggregateId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Version = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
+                    AggregateId = table.Column<Guid>(type: "char(36)", nullable: false),
+                    Version = table.Column<decimal>(type: "decimal(20,0)", nullable: false),
                     Aggregate = table.Column<string>(type: "text", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    Timestamp = table.Column<DateTimeOffset>(type: "timestamp", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,14 +26,13 @@ namespace User.Persistence.Migrations
 
             migrationBuilder.CreateTable(
                 name: "UserStoreEvents",
-                schema: "Users",
                 columns: table => new
                 {
-                    AggregateId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Version = table.Column<decimal>(type: "numeric(20,0)", nullable: false),
-                    EventType = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: false),
+                    AggregateId = table.Column<Guid>(type: "char(36)", nullable: false),
+                    Version = table.Column<decimal>(type: "decimal(20,0)", nullable: false),
+                    EventType = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     Event = table.Column<string>(type: "text", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    Timestamp = table.Column<DateTimeOffset>(type: "timestamp", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -49,12 +44,10 @@ namespace User.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "UserSnapshots",
-                schema: "Users");
+                name: "UserSnapshots");
 
             migrationBuilder.DropTable(
-                name: "UserStoreEvents",
-                schema: "Users");
+                name: "UserStoreEvents");
         }
     }
 }

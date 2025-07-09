@@ -10,7 +10,9 @@ namespace User.Application.UseCases.Commands
     {
         public async Task<Result<IdentifierResponse>> Handle(CreateUserCommand command, CancellationToken cancellationToken)
         {
-            var user = Domain.Aggregates.User.Create(command.UserId, command.Document, command.Phone);
+            var userId = Guid.NewGuid();
+
+            var user = Domain.Aggregates.User.Create(userId, command.Document, command.Phone);
 
             await userApplicationService.AppendEventsAsync(user, cancellationToken);
 

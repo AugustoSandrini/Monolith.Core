@@ -1,6 +1,5 @@
 ﻿using Core.Infrastructure.EventBus;
 using MassTransit;
-using UserEvent = User.Domain.Event;
 using UserDomainEvent = User.Domain.DomainEvent;
 using WebBff.ServiceInstallers.EventBus.Extensions;
 

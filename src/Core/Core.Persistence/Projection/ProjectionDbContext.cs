@@ -2,5 +2,5 @@
 
 namespace Core.Persistence.Projection
 {
-    public class ProjectionDbContext(string connectionString) : MongoDbContext(connectionString) { }
+    public class ProjectionDbContext(string connectionString, string databaseName) : MongoDbContext(connectionString, databaseName) { }
 }

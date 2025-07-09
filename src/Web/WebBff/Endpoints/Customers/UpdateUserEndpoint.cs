@@ -24,6 +24,7 @@ namespace WebBff.Endpoints.Customers
             Summary = "Update a User.",
             Description = "Update a User based on the provided request data.",
             Tags = [Tags.Users])]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public override async Task<ActionResult> HandleAsync(
         UpdateUserRequest request,
         CancellationToken cancellationToken = default) =>

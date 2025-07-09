@@ -4,5 +4,5 @@ namespace User.Persistence
 {
     public interface IUserProjectionDbContext : IMongoDbContext { }
 
-    public class UserProjectionDbContext(string connectionString) : MongoDbContext(connectionString), IUserProjectionDbContext;
+    public class UserProjectionDbContext(string connectionString, string databaseName) : MongoDbContext(connectionString, databaseName), IUserProjectionDbContext;
 }

@@ -1,17 +1,15 @@
-﻿using Core.Application;
+﻿using User.Persistence;
+using User.Persistence.Projections;
+using Core.Application;
 using Core.Application.EventStore;
 using Core.Infrastructure.Configuration;
 using Core.Persistence;
 using Core.Persistence.EventStore;
-using Core.Persistence.Extensions;
 using Core.Persistence.Options;
-using User.Persistence;
-using User.Persistence.Constants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using User.Persistence.Projections;
 
 namespace User.Infrastructure.ServiceInstallers
 {
@@ -20,6 +18,8 @@ namespace User.Infrastructure.ServiceInstallers
     /// </summary>
     internal sealed class PersistenceServiceInstaller : IServiceInstaller
     {
+        public const string DATABASE_NAME = "User";
+
         /// <inheritdoc />
         public void Install(IServiceCollection services, IConfiguration configuration) =>
             services
@@ -29,18 +29,17 @@ namespace User.Infrastructure.ServiceInstallers
                 .AddScoped<IUserProjectionDbContext>(provider =>
                 {
                     var configuration = provider.GetRequiredService<IConfiguration>();
-                    string connectionString = configuration.GetSection("Projections").GetValue<string>("User");
+                    string connectionString = configuration.GetConnectionString("Projection");
 
-                    return new UserProjectionDbContext(connectionString);
+                    return new UserProjectionDbContext(connectionString, DATABASE_NAME);
                 })
                 .AddDbContext<UserDbContext>((provider, builder) =>
                 {
                     ConnectionStringOptions connectionString = provider.GetService<IOptions<ConnectionStringOptions>>()!.Value;
 
-                    builder
-                        .UseNpgsql(
+                    builder.UseMySql(
                             connectionString: connectionString,
-                            dbContextOptionsBuilder => dbContextOptionsBuilder.WithMigrationHistoryTableInSchema(Schemas.Users));
+                            ServerVersion.AutoDetect(connectionString));
                 });
     }
 }
