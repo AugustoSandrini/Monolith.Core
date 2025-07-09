@@ -1,4 +1,4 @@
-﻿using Core.Domain.Primitives;
+using Core.Domain.Primitives;
 using User.Domain.Enumerations;
 using User.Domain.ValueObjects;
 
