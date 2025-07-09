@@ -7,11 +7,6 @@ namespace Common.Options
     {
         private const string ConfigurationSectionName = "EnvironmentOptions";
 
-        public void Configure(EnvironmentOptions options)
-        {
-            throw new NotImplementedException();
-        }
-
-        //public void Configure(EnvironmentOptions options) => configuration.GetSection(ConfigurationSectionName).Bind(options);
+        public void Configure(EnvironmentOptions options) => configuration.GetSection(ConfigurationSectionName);
     }
 }

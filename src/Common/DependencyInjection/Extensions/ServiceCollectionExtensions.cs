@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Common.Options;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 
@@ -6,30 +7,21 @@ namespace Common.DependencyInjection.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        private const string User_PROJECTION_DATABASE_NAME = "User";
-        private const string ORDER_PROJECTION_DATABASE_NAME = "Order";
+        private const string USER_PROJECTION_DATABASE_NAME = "User";
 
         public static IServiceCollection AddCommonServiceCollection(this IServiceCollection services, IConfiguration configuration)
         {
             //services
-            //    .AddIntegrationBmp()
-            //    .AddIntegrationVindi()
-            //    .AddCommunication()
-            //    .AddAuth0Api()
-            //    .AddIntegrationB2e()
-            //    .AddIntegrationCaf(configuration.GetSection("Projections").GetValue<string>("Order"))
-            //    .AddIntegrationClaro(configuration.GetSection("Projections").GetValue<string>("User"));
-
-            //services
             //    .AddAuthAuthentication();
 
             //services
-            //    .AddTransient<IS3Service, S3Service>();
+            //    .AddTransient<IService, Service>();
 
             //services
-            //    .ConfigureOptions<S3BucketDocumentSetup>()
-            //    .ConfigureOptions<EnvironmentOptionsSetup>()
-            //    .ConfigureOptions<DiscordWebHooksOptionsSetup>();
+            //    .ConfigureOptions<Setup>()
+
+            services.ConfigureOptions<EnvironmentOptionsSetup>();
+
 
             return services;
         }
