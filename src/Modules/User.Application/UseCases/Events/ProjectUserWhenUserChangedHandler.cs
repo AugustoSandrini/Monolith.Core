@@ -1,33 +1,21 @@
 ﻿using Core.Application.EventBus;
 using User.Domain;
-using User.Domain.Enumerations;
-using User.Domain.Exceptions;
 using MongoDB.Driver;
 using Serilog;
 
 namespace User.Application.UseCases.Events
 {
-    using User.Application.Services;
     using User.Domain.Aggregates;
     using User.Persistence.Projections;
-    using MediatR;
 
     public interface IProjectUserWhenUserChangedHandler :
         IEventHandler<DomainEvent.UserCreated>,
         IEventHandler<DomainEvent.AddressUpserted>,
-        IEventHandler<DomainEvent.UserVindiExternalIdLinked>,
-        IEventHandler<DomainEvent.LastTokenSentAtUpdated>,
         IEventHandler<DomainEvent.UserActiveStatus>,
-        IEventHandler<DomainEvent.UserSaleInProgressStatus>,
         IEventHandler<DomainEvent.UserDefaulterStatus>,
-        IEventHandler<DomainEvent.UserPendingDebtStatus>,
-        IEventHandler<DomainEvent.ProfileUpdated>;
+        IEventHandler<DomainEvent.UserUpdated>;
 
-    public class ProjectUserWhenUserChangedHandler(
-        IUserProjection<Projection.User> UserProjection,
-        IUserApplicationService applicationService,
-        ISender sender,
-        ILogger logger) : IProjectUserWhenUserChangedHandler
+    public class ProjectUserWhenUserChangedHandler(IUserProjection<Projection.User> UserProjection, ILogger logger) : IProjectUserWhenUserChangedHandler
     {
         public async Task Handle(DomainEvent.UserCreated @event, CancellationToken cancellationToken = default)
         {
@@ -39,9 +27,7 @@ namespace User.Application.UseCases.Events
                     @event.Document,
                     @event.Status,
                     null,
-                    string.Empty,
                     DateTimeOffset.MinValue,
-                    null,
                     @event.CreatedAt),
                  cancellationToken);
             }
@@ -71,42 +57,6 @@ namespace User.Application.UseCases.Events
             }
         }
 
-        public async Task Handle(DomainEvent.LastTokenSentAtUpdated @event, CancellationToken cancellationToken = default)
-        {
-            try
-            {
-                await UserProjection.UpdateOneFieldAsync(
-                    id: @event.UserId,
-                    field: User => User.LastTokenSentAt,
-                    value: @event.SentAt,
-                    cancellationToken: cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex, $"Falha ao projetar data de envio de token de cliente: {@event.UserId}.");
-
-                throw;
-            }
-        }
-
-        public async Task Handle(DomainEvent.UserVindiExternalIdLinked @event, CancellationToken cancellationToken = default)
-        {
-            try
-            {
-                await UserProjection.UpdateOneFieldAsync(
-                    id: @event.UserId,
-                    field: User => User.VindiExternalId,
-                    value: @event.VindiExternalId,
-                    cancellationToken: cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex, $"Falha ao projetar vindi ID externo de cliente: {@event.UserId}.");
-
-                throw;
-            }
-        }
-
         public async Task Handle(DomainEvent.UserActiveStatus @event, CancellationToken cancellationToken = default)
         {
             try
@@ -116,33 +66,6 @@ namespace User.Application.UseCases.Events
             catch (Exception ex)
             {
                 logger.Error(ex, $"Falha ao projetar status de cliente como ativo: {@event.UserId}.");
-
-                throw;
-            }
-        }
-        public async Task Handle(DomainEvent.UserPendingDebtStatus @event, CancellationToken cancellationToken = default)
-        {
-            try
-            {
-                await UpdateStatusAsync(@event.UserId, @event.Status, cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex, $"Falha ao projetar status de cliente como divida pendente: {@event.UserId}.");
-
-                throw;
-            }
-        }
-
-        public async Task Handle(DomainEvent.UserSaleInProgressStatus @event, CancellationToken cancellationToken = default)
-        {
-            try
-            {
-                await UpdateStatusAsync(@event.UserId, @event.Status, cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex, $"Falha ao projetar status cliente como compra em progresso: {@event.UserId}.");
 
                 throw;
             }
@@ -162,7 +85,7 @@ namespace User.Application.UseCases.Events
             }
         }
 
-        public async Task Handle(DomainEvent.ProfileUpdated @event, CancellationToken cancellationToken = default)
+        public async Task Handle(DomainEvent.UserUpdated @event, CancellationToken cancellationToken = default)
         {
             try
             {

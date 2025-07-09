@@ -1,8 +1,6 @@
 ﻿using Core.Domain.Primitives;
-using User.Domain.Entities;
 using User.Domain.Enumerations;
 using User.Domain.ValueObjects;
-using CreditConsultation = User.Domain.Entities.CreditConsultation;
 
 namespace User.Domain.Aggregates;
 
@@ -15,10 +13,6 @@ public class User : AggregateRoot
     public UserStatus Status { get; private set; }
     public Address Address { get; private set; }
     public DateTimeOffset DateOfBirth { get; private set; }
-    public DateTimeOffset? LastTokenSentAt { get; private set; }
-    public string VindiExternalId { get; private set; }
-    public List<PaymentProfile> PaymentProfiles { get; private set; } = [];
-    public List<CreditConsultation> CreditConsultations { get; private set; } = [];
 
     public static User Create(Guid UserId, string document, string phone)
     {
@@ -28,7 +22,7 @@ public class User : AggregateRoot
             UserId,
             document,
             phone,
-            UserStatus.PendingProfile,
+            UserStatus.Default,
             User.CreatedAt,
             version));
 
@@ -36,7 +30,7 @@ public class User : AggregateRoot
     }
 
     public void UpdateProfile(string name, string email, DateTimeOffset dateOfBirth)
-        => RaiseEvent<DomainEvent.ProfileUpdated>(version => new(Id, name, email, UserStatus.Active, dateOfBirth, version));
+        => RaiseEvent<DomainEvent.UserUpdated>(version => new(Id, name, email, UserStatus.Active, dateOfBirth, version));
 
     public void ChangeStatus(UserStatus UserStatus)
     {
@@ -46,16 +40,8 @@ public class User : AggregateRoot
                 RaiseEvent<DomainEvent.UserDefaulterStatus>(version => new(Id, UserStatus.Defaulter.Name, version));
                 break;
 
-            case UserStatus.SaleInProgressStatus:
-                RaiseEvent<DomainEvent.UserSaleInProgressStatus>(version => new(Id, UserStatus.SaleInProgress.Name, version));
-                break;
-
             case UserStatus.ActiveStatus:
                 RaiseEvent<DomainEvent.UserActiveStatus>(version => new(Id, UserStatus.Active.Name, version));
-                break;
-
-            case UserStatus.PendingDebtStatus:
-                RaiseEvent<DomainEvent.UserPendingDebtStatus>(version => new(Id, UserStatus.PendingDebt.Name, version));
                 break;
         }
     }
@@ -63,42 +49,8 @@ public class User : AggregateRoot
     public void UpsertAddress(Dto.Address address)
        => RaiseEvent<DomainEvent.AddressUpserted>(version => new(Id, address, version));
 
-    public Guid CreatePaymentProfile(string gatewayToken, int externalId)
-    {
-        var id = Guid.NewGuid();
-
-        RaiseEvent<DomainEvent.PaymentProfileCreated>(version
-            => new(id, Id, gatewayToken, true, externalId, DateTimeOffset.Now, version));
-
-        return id;
-    }
-
-    public void LinkExternalId(string vindiExternalId)
-        => RaiseEvent<DomainEvent.UserVindiExternalIdLinked>(version => new(Id, vindiExternalId, version));
-
     public void Delete()
         => RaiseEvent<DomainEvent.UserDeleted>(version => new(Id, version));
-
-    public Guid CreateCreditConsultation(Guid orderId)
-    {
-        var id = Guid.NewGuid();
-
-        RaiseEvent<DomainEvent.CreditConsultationCreated>(version => new(id, Id, orderId, DateTimeOffset.Now, version));
-
-        return id;
-    }
-
-    public void AcceptCreditConsultation(Guid id, Guid orderId, string decisionIp)
-        => RaiseEvent<DomainEvent.CreditConsultationAccepted>(version => new(id, orderId, decisionIp, DateTimeOffset.Now, DateTimeOffset.Now.AddDays(30), version));
-
-    public void RefuseCreditConsultation(Guid id, Guid orderId, string decisionIp)
-        => RaiseEvent<DomainEvent.CreditConsultationRefused>(version => new(id, orderId, decisionIp, DateTimeOffset.Now, version));
-
-    public void ExpireCreditConsultation(Guid creditConsultationId, Guid OrderId)
-        => RaiseEvent<DomainEvent.CreditConsultationExpired>(version => new(creditConsultationId, OrderId, DateTimeOffset.Now, version));
-
-    public void UpdateLastTokenSentAt()
-        => RaiseEvent<DomainEvent.LastTokenSentAtUpdated>(version => new(Id, DateTimeOffset.Now, version));
 
     protected override void ApplyEvent(IDomainEvent @event)
         => When(@event as dynamic);
@@ -111,13 +63,7 @@ public class User : AggregateRoot
         Status = (UserStatus)@event.Status;
     }
 
-    private void When(DomainEvent.PaymentProfileCreated @event)
-    {
-        PaymentProfiles.ForEach(x => x.SetAsNotMain());
-        PaymentProfiles.Add(PaymentProfile.Create(@event.PaymentProfileId, @event.ExternalId, @event.GatewayToken));
-    }
-
-    private void When(DomainEvent.ProfileUpdated @event)
+    private void When(DomainEvent.UserUpdated @event)
     {
         Name = @event.Name;
         Email = @event.Email;
@@ -128,36 +74,12 @@ public class User : AggregateRoot
     private void When(DomainEvent.AddressUpserted @event)
         => Address = Address.Create(@event.Address);
 
-    private void When(DomainEvent.UserVindiExternalIdLinked @event)
-        => VindiExternalId = @event.VindiExternalId;
-
     private void When(DomainEvent.UserDeleted _)
         => IsDeleted = true;
-
-    private void When(DomainEvent.CreditConsultationCreated @event)
-        => CreditConsultations.Add(CreditConsultation.Create(@event.CreditConsultationId, @event.OrderId));
-
-    private void When(DomainEvent.CreditConsultationAccepted @event)
-        => CreditConsultations.First(x => x.Id == @event.CreditConsultationId).Accept(@event.DecisionIp, @event.ExpireAt, @event.DecidedAt);
-
-    private void When(DomainEvent.CreditConsultationRefused @event)
-        => CreditConsultations.First(x => x.Id == @event.CreditConsultationId).Refuse(@event.DecisionIp, @event.DecidedAt);
-
-    private void When(DomainEvent.CreditConsultationExpired @event)
-        => CreditConsultations.First(x => x.Id == @event.CreditConsultationId).Expire();
-
-    private void When(DomainEvent.LastTokenSentAtUpdated @event)
-        => LastTokenSentAt = @event.SentAt;
 
     private void When(DomainEvent.UserDefaulterStatus @event)
         => Status = @event.Status;
 
-    private void When(DomainEvent.UserSaleInProgressStatus @event)
-        => Status = @event.Status;
-
     private void When(DomainEvent.UserActiveStatus @event)
-        => Status = @event.Status;
-
-    private void When(DomainEvent.UserPendingDebtStatus @event)
         => Status = @event.Status;
 }

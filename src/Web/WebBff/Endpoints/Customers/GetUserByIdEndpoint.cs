@@ -33,8 +33,7 @@ namespace WebBff.Endpoints.Customers
         GetUserByIdRequest request,
         CancellationToken cancellationToken = default) =>
         await Result.Create(request)
-            .Map(getUserDetailRequest => new GetUserByIdQuery(
-                ClaimsPrincipalExtensions.ExtractAuth0IdFromToken(getUserDetailRequest.Token)))
+            .Map(getUserDetailRequest => new GetUserByIdQuery(getUserDetailRequest.UserId))
             .Bind(query => sender.Send(query, cancellationToken))
             .Match(Ok, this.HandleFailure);
     }

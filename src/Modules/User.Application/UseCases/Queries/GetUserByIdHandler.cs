@@ -12,9 +12,7 @@ namespace User.Application.UseCases.Queries
     public class GetUserByIdHandler(
         IUserProjection<Projection.User> UserProjection,
         IUserProjection<Projection.Phone> phoneProjection,
-        IUserProjection<Projection.Email> emailProjection,
-        IUserProjection<Projection.CreditConsultation> creditConsultationProjection,
-        IUserProjection<Projection.PaymentProfile> paymentProfileProjection) : IQueryHandler<GetUserByIdQuery, UserResponse>
+        IUserProjection<Projection.Email> emailProjection) : IQueryHandler<GetUserByIdQuery, UserResponse>
     {
         public async Task<Result<UserResponse>> Handle(GetUserByIdQuery query, CancellationToken cancellationToken)
         {
@@ -25,15 +23,11 @@ namespace User.Application.UseCases.Queries
 
             var phoneTask = phoneProjection.FindAsync(phone => phone.UserId == User.Id, cancellationToken);
             var emailTask = emailProjection.FindAsync(email => email.UserId == User.Id, cancellationToken);
-            var creditConsultationsTask = creditConsultationProjection.ListAsync(creditConsultation => creditConsultation.UserId == User.Id, cancellationToken);
-            var paymentProfilesTask = paymentProfileProjection.ListAsync(paymentProfile => paymentProfile.UserId == User.Id, cancellationToken);
 
-            await Task.WhenAll(phoneTask, emailTask, creditConsultationsTask, paymentProfilesTask);
+            await Task.WhenAll(phoneTask, emailTask);
 
             var phone = await phoneTask;
             var email = await emailTask;
-            var creditConsultations = await creditConsultationsTask;
-            var paymentProfiles = await paymentProfilesTask;
 
             return Result.Success<UserResponse>(
                 new(User.Id,
@@ -44,10 +38,6 @@ namespace User.Application.UseCases.Queries
                     User.Status,
                     User.Address,
                     User.DateOfBirth,
-                    User.LastTokenSentAt,
-                    User.VindiExternalId,
-                    paymentProfiles is not null ? paymentProfiles.Select(pp => (Dto.PaymentProfile)pp).ToList() : [],
-                    creditConsultations is not null ? creditConsultations.Select(cc => (Dto.CreditConsultation)cc).ToList() : [],
                     User.CreatedAt));
         }
     }

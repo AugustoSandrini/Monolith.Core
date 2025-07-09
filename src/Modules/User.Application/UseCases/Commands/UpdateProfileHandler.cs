@@ -13,11 +13,9 @@ namespace User.Application.UseCases.Commands
     using User.Domain.Enumerations;
     using User.Persistence.Projections;
     using User.Shared.Commands;
-    using System.Net;
 
     public class UpdateProfileHandler(
         IUserApplicationService applicationService,
-        //ICommunicationService communicationService,
         IUserProjection<Projection.User> UserProjectionGateway,
         IUserProjection<Projection.Email> projectionGateway,
         //IAuth0ApiClient auth0ApiService,
@@ -31,7 +29,7 @@ namespace User.Application.UseCases.Commands
             if (UserProjection is null)
                 return Result.Failure(new NotFoundError(DomainError.UserNotFound));
             
-            if(UserProjection.Status != UserStatus.PendingProfile)
+            if(UserProjection.Status != UserStatus.Blocked)
                 return Result.Failure(new ConflictError(DomainError.UserStatusNowAllowed));
 
             var validationResult = await ValidateUserEmailAsync(cmd.Email, UserProjection.Id, cancellationToken);
@@ -46,11 +44,6 @@ namespace User.Application.UseCases.Commands
 
             var User = UserResult.Value;
 
-            var verified = await VerifySmsTokenAsync(User.Phone, cmd.Token, cancellationToken);
-
-            if (verified.IsFailure)
-                return Result.Failure(verified.Error);
-
             var userIncluded = await IncludeAuth0UserAsync(cmd, User.Id.ToString(), cancellationToken);
 
             if (userIncluded.IsFailure)
@@ -59,24 +52,6 @@ namespace User.Application.UseCases.Commands
             User.UpdateProfile(cmd.Name, cmd.Email, cmd.DateOfBirth);
 
             await applicationService.AppendEventsAsync(User, cancellationToken);
-
-            return Result.Success();
-        }
-
-        private async Task<Result> VerifySmsTokenAsync(string phone, string token, CancellationToken cancellationToken)
-        {
-            //var request = new VerifyOtpRequest(token, phone);
-
-            //try
-            //{
-            //    await communicationService.VerifyOtpAsync(request, cancellationToken);
-            //}
-            //catch (Exception ex)
-            //{
-            //    logger.Error(ex, DomainError.SmsSendingFailed.Message);
-
-            //    return Result.Failure(DomainError.SmsSendingFailed);
-            //}
 
             return Result.Success();
         }

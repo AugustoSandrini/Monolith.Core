@@ -12,8 +12,8 @@ using Asp.Versioning;
 
 namespace WebBff.Endpoints.Customers
 {
-    public sealed class UpdateProfileEndpoint(ISender sender) : EndpointBaseAsync
-        .WithRequest<UpdateProfileRequest>
+    public sealed class UpdateUserEndpoint(ISender sender) : EndpointBaseAsync
+        .WithRequest<UpdateUserRequest>
         .WithActionResult
     {
         [ApiVersion("1.0")]
@@ -25,7 +25,7 @@ namespace WebBff.Endpoints.Customers
             Description = "Update a User based on the provided request data.",
             Tags = [Tags.Users])]
         public override async Task<ActionResult> HandleAsync(
-        UpdateProfileRequest request,
+        UpdateUserRequest request,
         CancellationToken cancellationToken = default) =>
         await Result.Create(request)
             .Map(updateProfileRequest => new UpdateProfileCommand(
@@ -33,8 +33,7 @@ namespace WebBff.Endpoints.Customers
                     updateProfileRequest.Content.Name,
                     updateProfileRequest.Content.Email,
                     updateProfileRequest.Content.DateOfBirth,
-                    updateProfileRequest.Content.Password,
-                    updateProfileRequest.Content.Token))
+                    updateProfileRequest.Content.Password))
             .Bind(command => sender.Send(command, cancellationToken))
             .Match(Ok, this.HandleFailure);
     }

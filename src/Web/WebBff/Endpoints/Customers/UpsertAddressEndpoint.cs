@@ -33,7 +33,7 @@ namespace WebBff.Endpoints.Customers
         CancellationToken cancellationToken = default) =>
         await Result.Create(request)
             .Map(upsertAddressRequest => new UpsertAddressCommand(
-                ClaimsPrincipalExtensions.ExtractAuth0IdFromToken(upsertAddressRequest.Token),
+                upsertAddressRequest.UserId,
                 upsertAddressRequest.Content.Address))
             .Bind(command => sender.Send(command, cancellationToken))
             .Match(Ok, this.HandleFailure);

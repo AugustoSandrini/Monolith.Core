@@ -11,11 +11,8 @@ namespace WebBff.Endpoints.Customers.Requests
     /// <param name="Address">The Address.</param>
     public sealed class UpsertAddressRequest
     {
-        [FromHeader(Name = UsersRoutes.Token)]
-        public string Token
-        {
-            get; set;
-        }
+        [FromQuery(Name = UsersRoutes.UserId)]
+        public Guid UserId { get; set; }
 
         [FromBody]
         public UpsertAddressContent Content

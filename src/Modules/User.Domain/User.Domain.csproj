@@ -10,5 +10,9 @@
     <ProjectReference Include="..\..\Core\Core.Domain\Core.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Entities\" />
+  </ItemGroup>
+
 
 </Project>

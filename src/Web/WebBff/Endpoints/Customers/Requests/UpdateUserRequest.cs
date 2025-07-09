@@ -9,7 +9,7 @@ namespace WebBff.Endpoints.Customers.Requests
     /// <param name="Name">The Name.</param>
     /// <param name="Email">The Email.</param>
     /// <param name="DateOfBirth">The DateOfBirth.</param>
-    public sealed class UpdateProfileRequest
+    public sealed class UpdateUserRequest
     {
         [FromBody]
         public UpdateProfileContent Content
@@ -18,7 +18,7 @@ namespace WebBff.Endpoints.Customers.Requests
         }
     }
 
-    public record UpdateProfileContent(string Document, string Name, string Email, DateTimeOffset DateOfBirth, string Password, string Token)
+    public record UpdateProfileContent(string Document, string Name, string Email, DateTimeOffset DateOfBirth, string Password)
     {
     }
 }

@@ -35,10 +35,6 @@ namespace User.Application.UseCases.Commands.Validators
             RuleFor(command => command.Password)
                 .NotNull().WithError(UserValidationErrors.PasswordIsRequired)
                 .NotEmpty().WithError(UserValidationErrors.PasswordIsRequired);
-
-            RuleFor(command => command.Token)
-                .NotNull().WithError(UserValidationErrors.TokenIsRequired)
-                .NotEmpty().WithError(UserValidationErrors.TokenIsRequired);
         }
     }
 }

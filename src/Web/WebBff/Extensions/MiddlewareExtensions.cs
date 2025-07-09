@@ -8,7 +8,7 @@ public static class MiddlewareExtensions
         => services.Configure<ContentValidationOptions>(options =>
            {
                 options.ContentValidation = @"""event"":{""type"":""test""";
-                options.Path = "/webhooks/vindi";
+                options.Path = "/webhooks/";
            });
 
     public static IApplicationBuilder UseMiddlewares(this IApplicationBuilder app)

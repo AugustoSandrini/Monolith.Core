@@ -11,13 +11,9 @@ namespace User.Shared.Responses
         string Status,
         Dto.Address? Address,
         DateTimeOffset? DateOfBirth,
-        DateTimeOffset? LastTokenSentAt,
-        string VindiExternalId,
-        List<Dto.PaymentProfile>? PaymentProfiles,
-        List<Dto.CreditConsultation>? CreditConsultations,
         DateTimeOffset CreatedAt)
     {
         public static implicit operator Dto.User(UserResponse User)
-            => new(User.Id, User.Name, User.Document, User.Status, User.Address, User.VindiExternalId, string.Empty, User.DateOfBirth!.Value, User.LastTokenSentAt, User.CreatedAt);
+            => new(User.Id, User.Name, User.Document, User.Status, User.Address, User.DateOfBirth!.Value, User.CreatedAt);
     };
 }

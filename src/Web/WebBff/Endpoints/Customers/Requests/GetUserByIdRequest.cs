@@ -9,10 +9,7 @@ namespace WebBff.Endpoints.Customers.Requests
     /// <param name="UserId">The UserId.</param>
     public sealed class GetUserByIdRequest
     {
-        [FromHeader(Name = UsersRoutes.Token)]
-        public string Token
-        {
-            get; set;
-        }
+        [FromQuery(Name = UsersRoutes.UserId)]
+        public Guid UserId { get; set; }
     }
 }

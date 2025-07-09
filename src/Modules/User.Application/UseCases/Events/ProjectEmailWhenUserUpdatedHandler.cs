@@ -5,14 +5,14 @@ using User.Persistence.Projections;
 
 namespace User.Application.UseCases.Events
 {
-    public interface IProjectEmailWhenProfileUpdatedHandler : IEventHandler<DomainEvent.ProfileUpdated>;
+    public interface IProjectEmailWhenUserUpdatedHandler : IEventHandler<DomainEvent.UserUpdated>;
 
-    public class ProjectEmailWhenProfileUpdatedHandler(
+    public class ProjectEmailWhenUserUpdatedHandler(
         IUserProjection<Projection.Email> emailProjection,
-        ILogger logger) : IProjectEmailWhenProfileUpdatedHandler
+        ILogger logger) : IProjectEmailWhenUserUpdatedHandler
     {
 
-        public async Task Handle(DomainEvent.ProfileUpdated @event, CancellationToken cancellationToken = default)
+        public async Task Handle(DomainEvent.UserUpdated @event, CancellationToken cancellationToken = default)
         {
             try
             {

@@ -47,14 +47,6 @@ ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false \
 ENV LC_ALL=pt_BR.UTF-8
 ENV LANG=pt_BR.UTF-8
 
-RUN apk add --no-cache curl tar bash \
-    && TRACER_VERSION=$(curl -s https://api.github.com/repos/DataDog/dd-trace-dotnet/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c2-) \
-    && curl -LO https://github.com/DataDog/dd-trace-dotnet/releases/download/v${TRACER_VERSION}/datadog-dotnet-apm-${TRACER_VERSION}-musl.tar.gz \
-    && mkdir -p /opt/datadog \
-    && tar -xzf datadog-dotnet-apm-${TRACER_VERSION}-musl.tar.gz -C /opt/datadog \
-    && rm datadog-dotnet-apm-${TRACER_VERSION}-musl.tar.gz
-
-
 WORKDIR /app
 
 COPY --from=publish /app/publish .

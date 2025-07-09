@@ -10,8 +10,5 @@ namespace User.Domain
             string Phone,
             Guid EstablishmentId,
             decimal RequestedAmount) : Message(), IEvent;
-
-        public record UserTokenSent(
-            Guid UserId) : Message, IEvent;
     }
 }

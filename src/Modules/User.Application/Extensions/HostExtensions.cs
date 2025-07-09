@@ -1,6 +1,4 @@
 ﻿using Core.Application.Services;
-using User.Application.UseCases.Commands;
-using Hangfire;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -13,8 +11,8 @@ namespace User.Application.Extensions
             using var scoped = host.Services.CreateScope();
             var jobScheduler = scoped.ServiceProvider.GetRequiredService<IJobSchedulerService>();
 
-            jobScheduler.ScheduleRecurring("Expire credit consultation", Cron.Daily(), new ExpireCreditConsultationCommand());
-            jobScheduler.ScheduleRecurring("Expire NumberIntelligence", Cron.Daily(), new ExpireNumberIntelligenceCommand());
+            //jobScheduler.ScheduleRecurring("Expire credit consultation", Cron.Daily(), //Command);
+            //jobScheduler.ScheduleRecurring("Expire NumberIntelligence", Cron.Daily(), //Command);
         }
     }
 }
