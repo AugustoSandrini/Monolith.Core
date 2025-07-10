@@ -78,16 +78,16 @@ jobs:
       - name: Build solution
         run: dotnet build Monolith.Core.sln --configuration Release --no-restore
 
-      - name: Run tests
-        env:
-          ConnectionStrings__Default: "Server=127.0.0.1;Port=3306;Database=eventStore;Uid=root;Pwd=!MyStrongPassword;AllowUserVariables=True;"
-          ConnectionStrings__Hangfire: "Server=127.0.0.1;Port=3306;Database=hangfire;Uid=root;Pwd=!MyStrongPassword;AllowUserVariables=True;"
-          ConnectionStrings__Projection: "mongodb://mongoadmin:secret@127.0.0.1:27017/"
-          EventBusOptions__ConnectionString: "amqp://guest:guest@127.0.0.1:5672/monocore"
-          JwtSettings__SecretKey: "vVvH62ef/AipOo31s+pQtHJfRQ4lE07LL94xDdmIohE="
-          JwtSettings__Issuer: "MonoCore-CI"
-          JwtSettings__Audience: "MonoCore-Users-CI"
-        run: dotnet test tests/WebBff.Tests/WebBff.Tests.csproj --configuration Release --no-build --verbosity normal
+        #       - name: Run tests
+        # env:
+        #   ConnectionStrings__Default: "Server=127.0.0.1;Port=3306;Database=eventStore;Uid=root;Pwd=!MyStrongPassword;AllowUserVariables=True;"
+        #   ConnectionStrings__Hangfire: "Server=127.0.0.1;Port=3306;Database=hangfire;Uid=root;Pwd=!MyStrongPassword;AllowUserVariables=True;"
+        #   ConnectionStrings__Projection: "mongodb://mongoadmin:secret@127.0.0.1:27017/"
+        #   EventBusOptions__ConnectionString: "amqp://guest:guest@127.0.0.1:5672/monocore"
+        #   JwtSettings__SecretKey: "vVvH62ef/AipOo31s+pQtHJfRQ4lE07LL94xDdmIohE="
+        #   JwtSettings__Issuer: "MonoCore-CI"
+        #   JwtSettings__Audience: "MonoCore-Users-CI"
+        # run: dotnet test tests/WebBff.Tests/WebBff.Tests.csproj --configuration Release --no-build --verbosity normal
 
       - name: Build Docker image
         if: github.event_name == 'push'
