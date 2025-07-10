@@ -16,22 +16,22 @@ namespace User.Application.UseCases.Commands
 
     public class UpdateProfileHandler(
         IUserApplicationService applicationService,
-        IUserProjection<Projection.User> UserProjectionGateway,
+        IUserProjection<Projection.User> userProjectionGateway,
         IUserProjection<Projection.Email> projectionGateway) : ICommandHandler<UpdateProfileCommand>
     {
         public async Task<Result> Handle(UpdateProfileCommand cmd, CancellationToken cancellationToken)
         {
-            var UserProjection = await UserProjectionGateway.FindAsync(User => User.Document == cmd.Document.RemoveNonAlphaNumericCharacters(), cancellationToken);
+            var userProjection = await userProjectionGateway.FindAsync(user => user.Document == cmd.Document.RemoveNonAlphaNumericCharacters(), cancellationToken);
 
-            if (UserProjection is null) return Result.Failure(new NotFoundError(DomainError.UserNotFound));
-            
-            if(UserProjection.Status != UserStatus.Default) return Result.Failure(new ConflictError(DomainError.UserStatusNowAllowed));
+            if(userProjection.Status != UserStatus.Default) return Result.Failure(new ConflictError(DomainError.UserStatusNowAllowed));
 
-            var validationResult = await ValidateUserEmailAsync(cmd.Email, UserProjection.Id, cancellationToken);
+            if (userProjection is null) return Result.Failure(new NotFoundError(DomainError.UserNotFound));
+
+            var validationResult = await ValidateUserEmailAsync(cmd.Email, userProjection.Id, cancellationToken);
 
             if (validationResult.IsFailure) return Result.Failure(validationResult.Error);
 
-            var UserResult = await applicationService.LoadAggregateAsync<User>(UserProjection.Id, cancellationToken);
+            var UserResult = await applicationService.LoadAggregateAsync<User>(userProjection.Id, cancellationToken);
 
             if(UserResult.IsFailure) return Result.Failure(UserResult.Error);
 
@@ -48,10 +48,7 @@ namespace User.Application.UseCases.Commands
         {
             var emailProjection = await projectionGateway.FindAsync(x => x.Address == email && x.UserId != UserId, cancellationToken);
 
-            if (emailProjection is not null)
-                return Result.Failure<User>(new ConflictError(DomainError.EmailAlreadyAdded));
-
-            return Result.Success();
+            return emailProjection is not null ? Result.Failure<User>(new ConflictError(DomainError.EmailAlreadyAdded)) : Result.Success();
         }
     }
 }
