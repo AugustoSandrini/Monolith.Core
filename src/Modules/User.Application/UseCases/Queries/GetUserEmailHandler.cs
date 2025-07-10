@@ -18,8 +18,8 @@ namespace User.Application.UseCases.Queries
             if (email is null)
                 return Result.Failure<UserEmailResponse>(new NotFoundError(DomainError.EmailNotFound));
 
-            return Result.Success<UserEmailResponse>(
-                new(email.Id,
+            return Result.Success(
+                new UserEmailResponse(email.Id,
                     email.UserId,
                     email.Address,
                     email.IsConfirmed,

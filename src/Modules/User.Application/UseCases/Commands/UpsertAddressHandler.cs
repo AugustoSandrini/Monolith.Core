@@ -11,16 +11,16 @@ namespace User.Application.UseCases.Commands
     {
         public async Task<Result> Handle(UpsertAddressCommand cmd, CancellationToken cancellationToken)
         {
-            var UserResult = await applicationService.LoadAggregateAsync<User>(cmd.UserId, cancellationToken);
+            var userResult = await applicationService.LoadAggregateAsync<User>(cmd.UserId, cancellationToken);
 
-            if (UserResult.IsFailure)
-                return Result.Failure(UserResult.Error);
+            if (userResult.IsFailure)
+                return Result.Failure(userResult.Error);
 
-            var User = UserResult.Value;
+            var user = userResult.Value;
 
-            User.UpsertAddress(cmd.Address);
+            user.UpsertAddress(cmd.Address);
 
-            await applicationService.AppendEventsAsync(User, cancellationToken);
+            await applicationService.AppendEventsAsync(user, cancellationToken);
 
             return Result.Success();
         }

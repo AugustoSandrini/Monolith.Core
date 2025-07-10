@@ -16,13 +16,13 @@ namespace User.Application.UseCases.Events
         IEventHandler<DomainEvent.UserDefaulterStatus>,
         IEventHandler<DomainEvent.UserUpdated>;
 
-    public class ProjectUserWhenUserChangedHandler(IUserProjection<Projection.User> UserProjection, ILogger logger) : IProjectUserWhenUserChangedHandler
+    public class ProjectUserWhenUserChangedHandler(IUserProjection<Projection.User> userProjection, ILogger logger) : IProjectUserWhenUserChangedHandler
     {
         public async Task Handle(DomainEvent.UserCreated @event, CancellationToken cancellationToken = default)
         {
             try
             {
-                await UserProjection.ReplaceInsertAsync(new(
+                await userProjection.ReplaceInsertAsync(new Projection.User(
                     @event.UserId,
                     string.Empty,
                     @event.Document.RemoveNonAlphaNumericCharacters(),
@@ -44,9 +44,9 @@ namespace User.Application.UseCases.Events
         {
             try
             {
-                await UserProjection.UpdateOneFieldAsync(
+                await userProjection.UpdateOneFieldAsync(
                     id: @event.UserId,
-                    field: User => User.Address,
+                    field: user => user.Address,
                     value: @event.Address,
                     cancellationToken: cancellationToken);
             }
@@ -90,15 +90,15 @@ namespace User.Application.UseCases.Events
         {
             try
             {
-                var collection = UserProjection.GetCollection();
+                var collection = userProjection.GetCollection();
 
                 var update = Builders<Projection.User>.Update
-                    .Set(User => User.Name, @event.Name)
-                    .Set(User => User.Status, @event.Status)
-                    .Set(User => User.DateOfBirth, @event.DateOfBirth);
+                    .Set(user => user.Name, @event.Name)
+                    .Set(user => user.Status, @event.Status)
+                    .Set(user => user.DateOfBirth, @event.DateOfBirth);
 
                 await collection.UpdateOneAsync(
-                    filter: User => User.Id == @event.UserId,
+                    filter: user => user.Id == @event.UserId,
                     update: update,
                     cancellationToken: cancellationToken);
             }
@@ -110,10 +110,10 @@ namespace User.Application.UseCases.Events
             }
         }
 
-        private async Task UpdateStatusAsync(Guid UserId, string status, CancellationToken cancellationToken = default)
-            => await UserProjection.UpdateOneFieldAsync(
-                id: UserId,
-                field: User => User.Status,
+        private async Task UpdateStatusAsync(Guid userId, string status, CancellationToken cancellationToken = default)
+            => await userProjection.UpdateOneFieldAsync(
+                id: userId,
+                field: user => user.Status,
                 value: status,
                 cancellationToken: cancellationToken);
     }

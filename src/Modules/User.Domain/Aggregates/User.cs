@@ -14,43 +14,43 @@ public class User : AggregateRoot
     public Address Address { get; private set; }
     public DateTimeOffset DateOfBirth { get; private set; }
 
-    public static User Create(Guid UserId, string document, string phone)
+    public static User Create(Guid userId, string document, string phone)
     {
-        User User = new();
+        User user = new();
 
-        User.RaiseEvent<DomainEvent.UserCreated>(version => new(
-            UserId,
+        user.RaiseEvent<DomainEvent.UserCreated>(version => new DomainEvent.UserCreated(
+            userId,
             document,
             phone,
             UserStatus.Default,
-            User.CreatedAt,
+            user.CreatedAt,
             version));
 
-        return User;
+        return user;
     }
 
     public void UpdateProfile(string name, string email, DateTimeOffset dateOfBirth)
-        => RaiseEvent<DomainEvent.UserUpdated>(version => new(Id, name, email, UserStatus.Active, dateOfBirth, version));
+        => RaiseEvent<DomainEvent.UserUpdated>(version => new DomainEvent.UserUpdated(Id, name, email, UserStatus.Active, dateOfBirth, version));
 
-    public void ChangeStatus(UserStatus UserStatus)
+    public void ChangeStatus(UserStatus userStatus)
     {
-        switch (UserStatus)
+        switch (userStatus)
         {
             case UserStatus.DefaulterStatus:
-                RaiseEvent<DomainEvent.UserDefaulterStatus>(version => new(Id, UserStatus.Defaulter.Name, version));
+                RaiseEvent<DomainEvent.UserDefaulterStatus>(version => new DomainEvent.UserDefaulterStatus(Id, UserStatus.Defaulter.Name, version));
                 break;
 
             case UserStatus.ActiveStatus:
-                RaiseEvent<DomainEvent.UserActiveStatus>(version => new(Id, UserStatus.Active.Name, version));
+                RaiseEvent<DomainEvent.UserActiveStatus>(version => new DomainEvent.UserActiveStatus(Id, UserStatus.Active.Name, version));
                 break;
         }
     }
 
     public void UpsertAddress(Dto.Address address)
-       => RaiseEvent<DomainEvent.AddressUpserted>(version => new(Id, address, version));
+       => RaiseEvent<DomainEvent.AddressUpserted>(version => new DomainEvent.AddressUpserted(Id, address, version));
 
     public void Delete()
-        => RaiseEvent<DomainEvent.UserDeleted>(version => new(Id, version));
+        => RaiseEvent<DomainEvent.UserDeleted>(version => new DomainEvent.UserDeleted(Id, version));
 
     protected override void ApplyEvent(IDomainEvent @event)
         => When(@event as dynamic);
@@ -60,7 +60,7 @@ public class User : AggregateRoot
         Id = @event.UserId;
         Document = @event.Document;
         Phone = @event.Phone;
-        Status = (UserStatus)@event.Status;
+        Status = @event.Status;
     }
 
     private void When(DomainEvent.UserUpdated @event)

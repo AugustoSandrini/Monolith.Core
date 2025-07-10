@@ -31,7 +31,7 @@ namespace WebBff.Endpoints.Users
         await Result.Create(request)
             .Map(r => new CreateUserCommand(r.Content.Document, r.Content.Phone))
             .Bind(command => sender.Send(command, cancellationToken))
-            .Map(response => new IdentifierResponse(response.Id, tokenService.GenerateToken(response.Id.ToString())))
+            .Map(response => response with { Token = tokenService.GenerateToken(response.Id.ToString()) })
             .Match(Ok, this.HandleFailure);
     }
 }
