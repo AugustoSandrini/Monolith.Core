@@ -79,7 +79,7 @@ public class CreateUserHandler : ICommandHandler<CreateUserCommand, IdentifierRe
 - **Health Checks**: Monitoramento de infraestrutura
 - **Internationalization**: Suporte a PT-BR
 
-## 🎨 **Padrões e Práticas Implementadas**
+## **Padrões e Práticas Implementadas**
 
 ### **1. Domain-Driven Design (DDD)**
 ```csharp
