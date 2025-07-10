@@ -9,17 +9,17 @@
 
 > **Um projeto de portfólio demonstrando arquitetura enterprise-level com .NET 8, implementando DDD, Event Sourcing, CQRS e padrões de Clean Architecture em um monólito modular escalável.**
 
-## 🎯 **Sobre o Projeto**
+## **Sobre o Projeto**
 
 MonoCore é uma aplicação **enterprise-grade** desenvolvida como **monólito modular**, demonstrando expertise em arquiteturas complexas e padrões avançados de desenvolvimento. O projeto implementa **Domain-Driven Design (DDD)**, **Event Sourcing**, **CQRS** e **Clean Architecture**, representando o estado da arte em desenvolvimento .NET moderno.
 
-### 💼 **Contexto Profissional**
+### **Contexto Profissional**
 - Tomada de decisões arquiteturais complexas
 - Implementação de padrões enterprise
 - Integração de múltiplas tecnologias
 - Práticas DevOps modernas
 
-## 🏗️ **Arquitetura do Sistema**
+## **Arquitetura do Sistema**
 
 ### **Modular Monolith Pattern**
 ```
@@ -43,7 +43,7 @@ MonoCore é uma aplicação **enterprise-grade** desenvolvida como **monólito m
 - **Infrastructure Layer**: Database, Message Bus, External Services
 - **Presentation Layer**: REST APIs, Validation, Authentication
 
-## 🔧 **Stack Técnico**
+## **Stack Técnico**
 
 ### **Backend (.NET 8.0)**
 ```csharp
@@ -152,7 +152,7 @@ public async Task AppendEventsAsync<T>(T aggregate, CancellationToken cancellati
 }
 ```
 
-## 🚀 **Features Implementadas**
+## **Features Implementadas**
 
 ### **Core Features**
 - ✅ **Event Sourcing**: Store completo de eventos com replay
@@ -170,7 +170,7 @@ public async Task AppendEventsAsync<T>(T aggregate, CancellationToken cancellati
 - ✅ **PR Templates**: Processo estruturado de review
 - ✅ **CI/CD Pipeline**: Testes e build automatizados
 
-## 🐳 **Docker & DevOps**
+## **Docker & DevOps**
 
 ### **Multi-Stage Dockerfile**
 ```dockerfile
@@ -193,7 +193,7 @@ ENTRYPOINT ["dotnet", "WebBff.dll"]
 - **Security Scanning**: Dockerfile security checks
 - **Docker Build**: Imagens otimizadas para produção
 
-## 📊 **Métricas do Projeto**
+## **Métricas do Projeto**
 
 | Métrica | Valor | Descrição |
 |---------|-------|-----------|
@@ -203,7 +203,7 @@ ENTRYPOINT ["dotnet", "WebBff.dll"]
 | **Tecnologias Integradas** | 15+ | Stack enterprise completo |
 | **Cobertura de Testes** | Configurado | Framework de testes implementado |
 
-## 🎓 **Aprendizados e Desafios**
+## **Aprendizados e Desafios**
 
 ### **Desafios Técnicos Superados**
 1. **Consistency Eventual**: Implementação de CQRS com projeções consistentes
@@ -216,7 +216,7 @@ ENTRYPOINT ["dotnet", "WebBff.dll"]
 - **Event Sourcing**: Implementado para auditoria completa e capacidade de replay
 - **Multi-Database**: MySQL para consistência ACID, MongoDB para performance de leitura
 
-## 🚀 **Executando o Projeto**
+## **Executando o Projeto**
 
 ### **Pré-requisitos**
 ```bash
@@ -247,7 +247,7 @@ curl http://localhost:5171/swagger
 - **Health Checks**: `http://localhost:5171/api/healthz`
 - **User API**: `http://localhost:5171/api/v1/users`
 
-## 📈 **Roadmap Futuro**
+## **Roadmap Futuro**
 
 - [ ] **Implementar Cache Distribuído** (Redis)
 - [ ] **Adicionar Outbox Pattern** para garantias transacionais
@@ -255,9 +255,9 @@ curl http://localhost:5171/swagger
 - [ ] **Testes de Performance** (k6 integration)
 - [ ] **Novos Módulos** (Product, Order)
 
-## 👨‍💻 **Sobre o Desenvolvedor**
+## **Sobre o Desenvolvedor**
 
-**Desenvolvedor Pleno 1** especializado em:
+**Desenvolvedor Backend** especializado em:
 - **Arquiteturas Complexas**: DDD, Event Sourcing, CQRS
 - **Performance & Scalability**: Otimização de aplicações enterprise
 - **DevOps**: Docker, CI/CD
@@ -271,7 +271,7 @@ curl http://localhost:5171/swagger
 
 ---
 
-## 📞 **Contato**
+## **Contato**
 
 - **LinkedIn**: *https://www.linkedin.com/in/augusto-sandrini/*
 - **GitHub**: *https://github.com/AugustoSandrini/*
@@ -279,4 +279,4 @@ curl http://localhost:5171/swagger
 
 ---
 
-*Este projeto demonstra competências técnicas de nível pleno em desenvolvimento .NET, arquitetura de software e práticas DevOps modernas, representando capacidade para trabalhar em projetos enterprise de alta complexidade.*
+*Este projeto demonstra competências técnicas em desenvolvimento .NET, arquitetura de software e práticas DevOps modernas, representando capacidade para trabalhar em projetos enterprise de alta complexidade.*
