@@ -261,13 +261,13 @@ curl http://localhost:5171/swagger
 **Desenvolvedor Pleno 1** especializado em:
 - **Arquiteturas Complexas**: DDD, Event Sourcing, CQRS
 - **Performance & Scalability**: Otimização de aplicações enterprise
-- **DevOps**: Docker, CI/CD, Infrastructure as Code
+- **DevOps**: Docker, CI/CD
 - **Clean Code**: SOLID, Design Patterns, Best Practices
 
 ### **Tecnologias Dominadas**
-- **.NET Ecosystem**: C#, ASP.NET Core, Entity Framework
-- **Databases**: MySQL, SQL Server, MongoDB
-- **Cloud & DevOps**: Docker, Kubernetes, Azure, GitHub Actions
+- **.NET Ecosystem**: C#, ASP.NET Core, Entity Framework Core
+- **Databases**: MySQL, MongoDB
+- **Cloud & DevOps**: Docker, GitHub Actions
 - **Architecture**: Microservices, Event-Driven, Domain-Driven Design
 
 ---
