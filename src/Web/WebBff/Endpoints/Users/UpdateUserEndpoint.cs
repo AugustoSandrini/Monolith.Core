@@ -5,6 +5,8 @@ using Core.Shared.Results;
 using User.Shared.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Swashbuckle.AspNetCore.Annotations;
 using WebBff.Endpoints.Routes;
 using Asp.Versioning;
@@ -24,7 +26,7 @@ namespace WebBff.Endpoints.Users
             Summary = "Update a User.",
             Description = "Update a User based on the provided request data.",
             Tags = [Tags.Users])]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public override async Task<ActionResult> HandleAsync(
         UpdateUserRequest request,
         CancellationToken cancellationToken = default) =>

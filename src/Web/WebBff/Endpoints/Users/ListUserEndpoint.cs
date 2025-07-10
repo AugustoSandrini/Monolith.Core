@@ -4,6 +4,8 @@ using Core.Endpoints.Extensions;
 using Core.Shared.Results;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Swashbuckle.AspNetCore.Annotations;
 using User.Shared.Queries;
 using User.Shared.Responses;
@@ -24,7 +26,7 @@ namespace WebBff.Endpoints.Users
             Summary = "List Users.",
             Description = "List Users based on the provided request data.",
             Tags = [Tags.Users])]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public override async Task<ActionResult<List<UserResponse>>> HandleAsync(CancellationToken cancellationToken = default) =>
             await Result.Create(string.Empty)
             .Map(r => new ListUserQuery())

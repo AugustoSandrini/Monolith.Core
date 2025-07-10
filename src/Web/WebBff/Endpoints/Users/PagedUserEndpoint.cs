@@ -5,6 +5,8 @@ using Core.Endpoints.Extensions;
 using Core.Shared.Results;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Swashbuckle.AspNetCore.Annotations;
 using User.Shared.Queries;
 using User.Shared.Responses;
@@ -25,7 +27,7 @@ namespace WebBff.Endpoints.Users
             Summary = "Paged a User.",
             Description = "Paged a User based on the provided request data.",
             Tags = [Tags.Users])]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public override async Task<ActionResult<IPagedResult<UserResponse>>> HandleAsync(
             PagedUserRequest request,
             CancellationToken cancellationToken = default) =>

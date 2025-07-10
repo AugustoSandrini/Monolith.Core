@@ -3,6 +3,8 @@ using Asp.Versioning;
 using Core.Endpoints.Extensions;
 using Core.Shared.Results;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using User.Shared.Queries;
@@ -24,7 +26,7 @@ namespace WebBff.Endpoints.Users
             Summary = "Get a User.",
             Description = "Get a User based on the provided request data.",
             Tags = [Tags.Users])]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public override async Task<ActionResult<UserResponse>> HandleAsync(
             GetUserByDocumentRequest request,
             CancellationToken cancellationToken = default) =>

@@ -26,7 +26,7 @@ namespace WebBff.Endpoints.Users
             Summary = "Delete a User.",
             Description = "Delete a User based on the provided request data.",
             Tags = [Tags.Users])]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public override async Task<ActionResult> HandleAsync(
         DeleteUserRequest request,
         CancellationToken cancellationToken = default) =>

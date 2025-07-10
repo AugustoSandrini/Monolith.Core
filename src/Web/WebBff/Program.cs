@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.HttpLogging;
 using Serilog;
 using WebBff.Extensions;
-using WebBff.Handlers;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -50,8 +49,6 @@ builder.Services
 
 builder.Services.AddHealthCheck(builder.Configuration);
 
-builder.Services.AddAuthentication("BasicAuthentication")
-    .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
 #if !DEBUG
 var port = "8080";
@@ -90,6 +87,7 @@ app.UseSwagger()
             .AllowAnyOrigin());
 
 app.UseCorrelationId();
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseSerilogRequestLogging()
    .UseHttpsRedirection();

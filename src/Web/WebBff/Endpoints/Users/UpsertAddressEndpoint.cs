@@ -27,7 +27,7 @@ namespace WebBff.Endpoints.Users
             Summary = "Upsert a Address.",
             Description = "Upsert a Address based on the provided request data.",
             Tags = [Tags.Users])]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public override async Task<ActionResult> HandleAsync(
         UpsertAddressRequest request,
         CancellationToken cancellationToken = default) =>
