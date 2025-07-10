@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace WebBff.Endpoints.Customers.Requests
+namespace WebBff.Endpoints.Users.Requests
 {
     /// <summary>
     /// Represents the request for updateProfile User.

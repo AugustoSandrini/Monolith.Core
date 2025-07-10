@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebBff.Endpoints.Routes;
 
-namespace WebBff.Endpoints.Customers.Requests
+namespace WebBff.Endpoints.Users.Requests
 {
     /// <summary>
     /// Represents the request for get User by UserId.
@@ -9,7 +9,7 @@ namespace WebBff.Endpoints.Customers.Requests
     /// <param name="UserId">The UserId.</param>
     public sealed class GetUserByIdRequest
     {
-        [FromQuery(Name = UsersRoutes.UserId)]
+        [FromRoute(Name = UsersRoutes.UserId)]
         public Guid UserId { get; set; }
     }
 }

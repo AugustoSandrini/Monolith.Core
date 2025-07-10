@@ -2,7 +2,7 @@
 using User.Domain;
 using WebBff.Endpoints.Routes;
 
-namespace WebBff.Endpoints.Customers.Requests
+namespace WebBff.Endpoints.Users.Requests
 {
     /// <summary>
     /// Represents the request for upsert Address.

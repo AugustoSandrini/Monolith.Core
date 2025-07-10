@@ -17,12 +17,8 @@ namespace User.Application.UseCases.Commands
     public class UpdateProfileHandler(
         IUserApplicationService applicationService,
         IUserProjection<Projection.User> UserProjectionGateway,
-        IUserProjection<Projection.Email> projectionGateway,
-        //IAuth0ApiClient auth0ApiService,
-        ILogger logger) : ICommandHandler<UpdateProfileCommand>
+        IUserProjection<Projection.Email> projectionGateway) : ICommandHandler<UpdateProfileCommand>
     {
-        //public const string CONNECTION_TYPE = "User";
-
         public async Task<Result> Handle(UpdateProfileCommand cmd, CancellationToken cancellationToken)
         {
             var UserProjection = await UserProjectionGateway.FindAsync(User => User.Document == cmd.Document.RemoveNonAlphaNumericCharacters(), cancellationToken);
@@ -41,50 +37,9 @@ namespace User.Application.UseCases.Commands
 
             var User = UserResult.Value;
 
-            var userIncluded = await IncludeAuth0UserAsync(cmd, User.Id.ToString(), cancellationToken);
-
-            if (userIncluded.IsFailure) return Result.Failure(userIncluded.Error);
-
             User.UpdateProfile(cmd.Name, cmd.Email, cmd.DateOfBirth);
 
             await applicationService.AppendEventsAsync(User, cancellationToken);
-
-            return Result.Success();
-        }
-
-        private async Task<Result> IncludeAuth0UserAsync(UpdateProfileCommand cmd, string id, CancellationToken cancellationToken)
-        {
-            //var request = new IncludeUserRequest()
-            //{
-            //    Id = id,
-            //    Name = cmd.Name,
-            //    Email = cmd.Email,
-            //    Password = cmd.Password,
-            //    Connection = CONNECTION_TYPE
-            //};
-
-            //try
-            //{
-            //    await auth0ApiService.IncludeUserAsync(request, cancellationToken);
-            //}
-            //catch (ApiException ex) when (ex.StatusCode == HttpStatusCode.Conflict)
-            //{
-            //    var auth0users = await auth0ApiService.GetUserByEmailAsync(cmd.Email, cancellationToken);
-
-            //    var user = auth0users.First(user => user.Identities.Any(identity => identity.Connection.Equals(CONNECTION_TYPE, StringComparison.OrdinalIgnoreCase)));
-
-            //    await auth0ApiService.DeleteUserAsync(user.UserId, cancellationToken);
-
-            //    await IncludeAuth0UserAsync(cmd, id, cancellationToken);
-            //}
-            //catch (ApiException ex)
-            //{
-            //    var error = new Error(DomainError.Auth0IncludingUserFailed.Code, DomainError.Auth0IncludingUserFailed.Message);
-
-            //    logger.Error(ex, error.Message);
-
-            //    return Result.Failure(error);
-            //}
 
             return Result.Success();
         }

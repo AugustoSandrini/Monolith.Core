@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Authorization;
 using Swashbuckle.AspNetCore.Annotations;
 using WebBff.Endpoints.Routes;
 using User.Shared.Commands;
-using WebBff.Endpoints.Customers.Requests;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Asp.Versioning;
+using WebBff.Endpoints.Users.Requests;
 
-namespace WebBff.Endpoints.Customers
+namespace WebBff.Endpoints.Users
 {
     public sealed class DeleteUserEndpoint(ISender sender) : EndpointBaseAsync
         .WithRequest<DeleteUserRequest>

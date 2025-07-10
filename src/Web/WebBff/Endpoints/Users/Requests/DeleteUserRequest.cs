@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebBff.Endpoints.Routes;
 
-namespace WebBff.Endpoints.Customers.Requests
+namespace WebBff.Endpoints.Users.Requests
 {
     /// <summary>
     /// Represents the request for delete a User.

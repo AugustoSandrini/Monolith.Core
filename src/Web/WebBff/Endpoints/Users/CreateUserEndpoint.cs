@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using User.Shared.Commands;
 using User.Shared.Responses;
-using WebBff.Endpoints.Customers.Requests;
 using WebBff.Endpoints.Routes;
+using WebBff.Endpoints.Users.Requests;
 
-namespace WebBff.Endpoints.Customers
+namespace WebBff.Endpoints.Users
 {
     public sealed class CreateUserEndpoint(ISender sender) : EndpointBaseAsync
         .WithRequest<CreateUserRequest>

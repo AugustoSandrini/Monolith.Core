@@ -7,10 +7,10 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using WebBff.Endpoints.Routes;
-using WebBff.Endpoints.Customers.Requests;
 using Asp.Versioning;
+using WebBff.Endpoints.Users.Requests;
 
-namespace WebBff.Endpoints.Customers
+namespace WebBff.Endpoints.Users
 {
     public sealed class UpdateUserEndpoint(ISender sender) : EndpointBaseAsync
         .WithRequest<UpdateUserRequest>

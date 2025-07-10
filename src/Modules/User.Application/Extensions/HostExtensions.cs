@@ -11,8 +11,7 @@ namespace User.Application.Extensions
             using var scoped = host.Services.CreateScope();
             var jobScheduler = scoped.ServiceProvider.GetRequiredService<IJobSchedulerService>();
 
-            //jobScheduler.ScheduleRecurring("Expire credit consultation", Cron.Daily(), //Command);
-            //jobScheduler.ScheduleRecurring("Expire NumberIntelligence", Cron.Daily(), //Command);
+            //jobScheduler.ScheduleRecurring(//Name, Cron.Daily(), //Command);
         }
     }
 }

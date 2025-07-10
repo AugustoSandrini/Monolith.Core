@@ -35,6 +35,15 @@ namespace Core.Persistence.Projection
             return FindPagedAsync<TProjection>(predicate, paging, orderBy, sortDirection, null, cancellationToken);
         }
 
+        public Task<IPagedResult<TProjection>> FindPagedAsync(
+            Paging paging,
+            Expression<Func<TProjection, object>>? orderBy = null,
+            SortDirection sortDirection = SortDirection.Ascending,
+            CancellationToken cancellationToken = default)
+        {
+            return FindPagedAsync<TProjection>(null, paging, orderBy, sortDirection, null, cancellationToken);
+        }
+
         public async Task<IPagedResult<TDestination>> FindPagedAsync<TDestination>(
             Expression<Func<TProjection, bool>> predicate,
             Paging paging,
@@ -44,7 +53,13 @@ namespace Core.Persistence.Projection
             CancellationToken cancellationToken = default)
         {
             var skip = (paging.Number - 1) * paging.Size;
-            var queryable = _collection.AsQueryable().Where(predicate);
+            IQueryable<TProjection> queryable;
+
+            if (predicate != null)
+                queryable = _collection.AsQueryable().Where(predicate);
+            else
+                queryable = _collection.AsQueryable();
+
             var total = await queryable.CountAsync(cancellationToken);
 
             if (orderBy is not null)

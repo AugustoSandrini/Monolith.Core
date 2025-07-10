@@ -12,6 +12,10 @@
         internal const string UpdateProfile = $"{BaseUri}/profile";
         internal const string UpsertAddress = $"{BaseUri}/address";
 
-        internal const string GetUserById = $"{BaseUri}";
+        internal const string GetUserById = $"{BaseUri}/{{{UserId}:guid}}";
+        internal const string GetUserByDocument = $"{BaseUri}/document";
+        internal const string ListUser = $"{BaseUri}/users";
+        internal const string ListUserByName = $"{BaseUri}/name/users";
+        internal const string PagedUser = $"{BaseUri}/paged-users";
     }
 }

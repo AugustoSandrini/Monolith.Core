@@ -1,40 +1,41 @@
 ﻿using Ardalis.ApiEndpoints;
+
 using Common.Policies;
 using Core.Endpoints.Extensions;
 using Core.Shared.Results;
-using User.Shared.Queries;
-using User.Shared.Responses;
+using User.Shared.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using WebBff.Endpoints.Routes;
-using WebBff.Endpoints.Customers.Requests;
 using Asp.Versioning;
+using WebBff.Endpoints.Users.Requests;
 
-namespace WebBff.Endpoints.Customers
+namespace WebBff.Endpoints.Users
 {
-    public sealed class GetUserByIdEndpoint(ISender sender) : EndpointBaseAsync
-        .WithRequest<GetUserByIdRequest>
-        .WithActionResult<UserResponse>
+    public sealed class UpsertAddressEndpoint(ISender sender) : EndpointBaseAsync
+        .WithRequest<UpsertAddressRequest>
+        .WithActionResult
     {
         [ApiVersion("1.0")]
-        [HttpGet(UsersRoutes.GetUserById)]
+        [HttpPut(UsersRoutes.UpsertAddress)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [SwaggerOperation(
-            Summary = "Get User By UserId",
-            Description = "Get User By UserId based on the provided request data.",
+            Summary = "Upsert a Address.",
+            Description = "Upsert a Address based on the provided request data.",
             Tags = [Tags.Users])]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public override async Task<ActionResult<UserResponse>> HandleAsync(
-        GetUserByIdRequest request,
+        public override async Task<ActionResult> HandleAsync(
+        UpsertAddressRequest request,
         CancellationToken cancellationToken = default) =>
         await Result.Create(request)
-            .Map(getUserDetailRequest => new GetUserByIdQuery(getUserDetailRequest.UserId))
-            .Bind(query => sender.Send(query, cancellationToken))
+            .Map(upsertAddressRequest => new UpsertAddressCommand(
+                upsertAddressRequest.UserId,
+                upsertAddressRequest.Content.Address))
+            .Bind(command => sender.Send(command, cancellationToken))
             .Match(Ok, this.HandleFailure);
     }
 }
