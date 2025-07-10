@@ -24,6 +24,6 @@ namespace User.Application.Errors.Validation
         }
 
         protected static bool BeAValidCpf(string cpf)
-            => CpfValidation.Validate(cpf);
+            => CpfValidation.Validate(cpf);//
     }
 }
