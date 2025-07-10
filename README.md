@@ -24,16 +24,16 @@ MonoCore é uma aplicação **enterprise-grade** desenvolvida como **monólito m
 ### **Modular Monolith Pattern**
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    WebBff (API Layer)                      │
+│                    WebBff (API Layer)                       │
 ├─────────────────────────────────────────────────────────────┤
-│  User Module  │  Future Module  │  Future Module          │
-│  ┌─────────────┴─────────────────┴─────────────────────┐   │
-│  │                Core Framework                       │   │
-│  │  • Application  • Domain  • Infrastructure         │   │
-│  │  • Persistence  • Shared                           │   │
-│  └─────────────────────────────────────────────────────┘   │
+│  User Module  │  Future Module  │  Future Module            │
+│  ┌─────────────┴─────────────────┴─────────────────────┐    │
+│  │                Core Framework                       │    │
+│  │  • Application  • Domain  • Infrastructure          │    │
+│  │  • Persistence  • Shared                            │    │
+│  └─────────────────────────────────────────────────────┘    │
 ├─────────────────────────────────────────────────────────────┤
-│  Database Layer: MySQL + MongoDB + RabbitMQ                │
+│  Database Layer: MySQL + MongoDB + RabbitMQ                 │
 └─────────────────────────────────────────────────────────────┘
 ```
 
