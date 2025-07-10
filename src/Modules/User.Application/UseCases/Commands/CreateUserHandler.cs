@@ -16,7 +16,7 @@ namespace User.Application.UseCases.Commands
 
             await userApplicationService.AppendEventsAsync(user, cancellationToken);
 
-            return Result.Success<IdentifierResponse>(new(user.Id));
+            return Result.Success(new IdentifierResponse(user.Id));
         }
     }
 }
