@@ -27,3 +27,4 @@ namespace User.Application.Errors.Validation
             => CpfValidation.Validate(cpf);
     }
 }
+ 
