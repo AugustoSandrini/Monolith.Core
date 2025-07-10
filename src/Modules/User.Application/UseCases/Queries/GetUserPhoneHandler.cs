@@ -19,12 +19,12 @@ namespace User.Application.UseCases.Queries
             if (phone is null)
                 return Result.Failure<UserPhoneResponse>(new NotFoundError(DomainError.PhoneNotFound));
 
-            return Result.Success<UserPhoneResponse>(
-                new(phone.Id,
-                    phone.UserId,
-                    phone.Number,
-                    phone.IsConfirmed,
-                    phone.CreatedAt));
+            return Result.Success(new UserPhoneResponse(
+                phone.Id,
+                phone.UserId,
+                phone.Number,
+                phone.IsConfirmed,
+                phone.CreatedAt));
         }
     }
 }

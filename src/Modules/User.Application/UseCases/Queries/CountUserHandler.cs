@@ -8,11 +8,11 @@ using MongoDB.Driver;
 namespace User.Application.UseCases.Queries
 {
     public class CountUserHandler(
-        IUserProjection<Projection.User> UserProjection) : IQueryHandler<CountUserQuery, long>
+        IUserProjection<Projection.User> userProjection) : IQueryHandler<CountUserQuery, long>
     {
         public async Task<Result<long>> Handle(CountUserQuery query, CancellationToken cancellationToken)
         {
-            var collection = UserProjection.GetCollection();
+            var collection = userProjection.GetCollection();
 
             var filter = Builders<Projection.User>.Filter.Empty;
 
@@ -22,9 +22,9 @@ namespace User.Application.UseCases.Queries
             if (query.EndDate.HasValue)
                 filter &= Builders<Projection.User>.Filter.Lte(c => c.CreatedAt.Date, query.EndDate.Value.Date);
 
-            var Users = await collection.CountDocumentsAsync(filter, cancellationToken: cancellationToken);
+            var users = await collection.CountDocumentsAsync(filter, cancellationToken: cancellationToken);
 
-            return Result.Success(Users);
+            return Result.Success(users);
         }
     }
 }
