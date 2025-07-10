@@ -9,7 +9,7 @@ namespace User.Application.UseCases.Events
     public interface IDeleteUserWhenUserDeletedHandler : IEventHandler<DomainEvent.UserDeleted>;
 
     public class DeleteUserWhenUserDeletedHandler(
-        IUserProjection<Projection.User> UserProjection,
+        IUserProjection<Projection.User> userProjection,
         IUserProjection<Projection.Phone> phoneProjection,
         IUserProjection<Projection.Email> emailProjection,
         ILogger logger) : IDeleteUserWhenUserDeletedHandler
@@ -20,7 +20,7 @@ namespace User.Application.UseCases.Events
             {
                 await phoneProjection.DeleteAsync(x => x.UserId == @event.UserId, cancellationToken);
                 await emailProjection.DeleteAsync(x => x.UserId == @event.UserId, cancellationToken);
-                await UserProjection.DeleteAsync(x => x.Id == @event.UserId, cancellationToken);
+                await userProjection.DeleteAsync(x => x.Id == @event.UserId, cancellationToken);
             }
             catch (Exception ex)
             {
