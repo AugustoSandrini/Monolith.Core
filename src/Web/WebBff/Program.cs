@@ -52,8 +52,6 @@ builder.Services.AddHealthCheck(builder.Configuration);
 
 #if !DEBUG
 var port = "8080";
-#else
-var port = "5171";
 #endif
 
 builder.Services.AddHttpLogging(options
