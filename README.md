@@ -14,7 +14,6 @@
 MonoCore é uma aplicação **enterprise-grade** desenvolvida como **monólito modular**, demonstrando expertise em arquiteturas complexas e padrões avançados de desenvolvimento. O projeto implementa **Domain-Driven Design (DDD)**, **Event Sourcing**, **CQRS** e **Clean Architecture**, representando o estado da arte em desenvolvimento .NET moderno.
 
 ### 💼 **Contexto Profissional**
-Este projeto foi desenvolvido para demonstrar capacidades técnicas de **nível pleno**, incluindo:
 - Tomada de decisões arquiteturais complexas
 - Implementação de padrões enterprise
 - Integração de múltiplas tecnologias
