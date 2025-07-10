@@ -20,7 +20,7 @@ jobs:
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping"
+          --health-cmd="mysqladmin ping --host=127.0.0.1 --port=3306 --user=root --password=!MyStrongPassword"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
@@ -63,13 +63,25 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore Monolith.Core.sln
 
+      - name: Setup databases
+        run: |
+          # Wait for MySQL to be ready
+          until mysql -h127.0.0.1 -P3306 -uroot -p'!MyStrongPassword' -e "SELECT 1" >/dev/null 2>&1; do
+            echo "Waiting for MySQL..."
+            sleep 2
+          done
+          
+          # Create hangfire database
+          mysql -h127.0.0.1 -P3306 -uroot -p'!MyStrongPassword' -e "CREATE DATABASE IF NOT EXISTS hangfire;"
+          echo "Databases created successfully"
+
       - name: Build solution
         run: dotnet build Monolith.Core.sln --configuration Release --no-restore
 
       - name: Run tests
         env:
-          ConnectionStrings__Default: "Server=127.0.0.1;Port=3306;Database=eventStore;Uid=root;Pwd=!MyStrongPassword;"
-          ConnectionStrings__Hangfire: "Server=127.0.0.1;Port=3306;Database=hangfire;Uid=root;Pwd=!MyStrongPassword;"
+          ConnectionStrings__Default: "Server=127.0.0.1;Port=3306;Database=eventStore;Uid=root;Pwd=!MyStrongPassword;AllowUserVariables=True;"
+          ConnectionStrings__Hangfire: "Server=127.0.0.1;Port=3306;Database=hangfire;Uid=root;Pwd=!MyStrongPassword;AllowUserVariables=True;"
           ConnectionStrings__Projection: "mongodb://mongoadmin:secret@127.0.0.1:27017/"
           EventBusOptions__ConnectionString: "amqp://guest:guest@127.0.0.1:5672/monocore"
           JwtSettings__SecretKey: "vVvH62ef/AipOo31s+pQtHJfRQ4lE07LL94xDdmIohE="
