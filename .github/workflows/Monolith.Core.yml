@@ -1,0 +1,93 @@
+name: Monolith.Core
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+  push:
+    branches: [main, dev]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: "!MyStrongPassword"
+          MYSQL_DATABASE: eventStore
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+      mongodb:
+        image: mongo:7-jammy
+        env:
+          MONGO_INITDB_ROOT_USERNAME: mongoadmin
+          MONGO_INITDB_ROOT_PASSWORD: secret
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.adminCommand(\"ping\")'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      rabbitmq:
+        image: rabbitmq:3-management-alpine
+        env:
+          RABBITMQ_DEFAULT_USER: guest
+          RABBITMQ_DEFAULT_PASS: guest
+        ports:
+          - 5672:5672
+        options: >-
+          --health-cmd "rabbitmq-diagnostics ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore Monolith.Core.sln
+
+      - name: Build solution
+        run: dotnet build Monolith.Core.sln --configuration Release --no-restore
+
+      - name: Run tests
+        env:
+          ConnectionStrings__Default: "Server=127.0.0.1;Port=3306;Database=eventStore;Uid=root;Pwd=!MyStrongPassword;"
+          ConnectionStrings__Hangfire: "Server=127.0.0.1;Port=3306;Database=hangfire;Uid=root;Pwd=!MyStrongPassword;"
+          ConnectionStrings__Projection: "mongodb://mongoadmin:secret@127.0.0.1:27017/"
+          EventBusOptions__ConnectionString: "amqp://guest:guest@127.0.0.1:5672/monocore"
+          JwtSettings__SecretKey: "vVvH62ef/AipOo31s+pQtHJfRQ4lE07LL94xDdmIohE="
+          JwtSettings__Issuer: "MonoCore-CI"
+          JwtSettings__Audience: "MonoCore-Users-CI"
+        run: dotnet test tests/WebBff.Tests/WebBff.Tests.csproj --configuration Release --no-build --verbosity normal
+
+      - name: Build Docker image
+        if: github.event_name == 'push'
+        run: |
+          docker build -f src/Web/WebBff/Dockerfile -t monolith-core:${{ github.sha }} .
+          docker tag monolith-core:${{ github.sha }} monolith-core:latest
+
+  cleanup:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    
+    steps:
+      - name: Cleanup resources
+        run: |
+          echo "Cleaning up resources for PR #${{ github.event.number }}"
