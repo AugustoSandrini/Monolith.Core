@@ -19,9 +19,10 @@ builder.Services
         builder.Configuration,
         User.Infrastructure.AssemblyReference.Assembly);
 
-#if !DEBUG
-builder.ConfigureSystemsManager();
-#endif
+if (!builder.Environment.IsDevelopment())
+{
+    builder.ConfigureSystemsManager();
+}
 
 builder.Services
     .AddHttpContextAccessor();
@@ -49,10 +50,6 @@ builder.Services
 
 builder.Services.AddHealthCheck(builder.Configuration);
 
-
-#if !DEBUG
-var port = "8080";
-#endif
 
 builder.Services.AddHttpLogging(options
     => options.LoggingFields = HttpLoggingFields.All);
