@@ -1,8 +1,8 @@
-FROM mcr.microsoft.com/dotnet/aspnet:10.0-alpine AS base
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 WORKDIR /app
 EXPOSE 8080
 
-FROM mcr.microsoft.com/dotnet/sdk:10.0-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
 COPY ["Directory.Packages.props", "."]
@@ -34,7 +34,7 @@ RUN dotnet publish "WebBff.csproj" -c Release -o /app/publish /p:UseAppHost=fals
 
 FROM base AS final
 
-RUN apk add --no-cache icu-libs icu-data-full curl
+RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
 
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false \
     TZ=America/Sao_Paulo \
@@ -46,8 +46,8 @@ ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false \
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-RUN addgroup -g 1001 -S appgroup && \
-    adduser -S appuser -G appgroup -u 1001 && \
+RUN groupadd -g 1001 appgroup && \
+    useradd -u 1001 -g appgroup -s /bin/false -M appuser && \
     chown -R appuser:appgroup /app
 USER appuser
 

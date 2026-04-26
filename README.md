@@ -178,12 +178,12 @@ public async Task AppendEventsAsync<T>(T aggregate, CancellationToken cancellati
 ### **Multi-Stage Dockerfile**
 ```dockerfile
 # Otimizado para produção com usuário não-root
-FROM mcr.microsoft.com/dotnet/sdk:10.0-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 COPY ["Monolith.Core.sln", "."]
 # ... build steps
 
-FROM mcr.microsoft.com/dotnet/aspnet:10.0-alpine AS final
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 RUN adduser -S appuser -G appgroup
 USER appuser
 COPY --from=publish /app/publish .
