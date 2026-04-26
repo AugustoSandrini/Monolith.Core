@@ -6,6 +6,7 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
 COPY ["Directory.Packages.props", "."]
+COPY ["Directory.Build.props", "."]
 COPY ["Monolith.Core.sln", "."]
 
 COPY ["src/Web/WebBff/WebBff.csproj", "src/Web/WebBff/"]
