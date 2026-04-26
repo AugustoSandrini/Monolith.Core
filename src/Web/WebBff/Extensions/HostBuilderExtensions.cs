@@ -32,9 +32,6 @@ namespace WebBff.Extensions
                     .Enrich.FromLogContext()
                     .MinimumLevel.Override("MassTransit", LogEventLevel.Warning)
                     .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-#if DEBUG
-                    .WriteTo.Console(theme: Serilog.Sinks.SystemConsole.Themes.AnsiConsoleTheme.Code)
-#endif
                     .ReadFrom.Configuration(configuration);
             });
 
