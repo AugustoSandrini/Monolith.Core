@@ -17,9 +17,6 @@ namespace WebBff.Extensions
         /// <param name="hostBuilder">The host builder.</param>
         public static IHostBuilder ConfigureLogging(this WebApplicationBuilder builder, IConfiguration configuration)
         {
-            builder.Logging.ClearProviders();
-            builder.Logging.AddSerilog();
-
             builder.Host.UseSerilog((context, services, logger) =>
             {
                 logger

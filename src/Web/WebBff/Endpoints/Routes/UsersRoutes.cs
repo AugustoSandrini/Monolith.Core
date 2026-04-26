@@ -8,6 +8,7 @@
 
 
         internal const string CreateUser = $"{BaseUri}/create-user";
+        internal const string ResetToken = $"{BaseUri}/{{{UserId}:guid}}/reset-token";
         internal const string DeleteUser = $"{BaseUri}/{{{UserId}:guid}}";
         internal const string UpdateProfile = $"{BaseUri}/profile";
         internal const string UpsertAddress = $"{BaseUri}/address";
