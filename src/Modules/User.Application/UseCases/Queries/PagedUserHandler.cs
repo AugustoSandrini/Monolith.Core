@@ -1,7 +1,6 @@
 ﻿using Core.Application.Messaging;
 using Core.Application.Pagination;
 using Core.Domain.Primitives;
-using Core.Shared.Extensions;
 using Core.Shared.Results;
 using MongoDB.Driver;
 using User.Domain;

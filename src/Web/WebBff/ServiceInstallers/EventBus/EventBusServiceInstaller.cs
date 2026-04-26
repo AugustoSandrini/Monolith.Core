@@ -1,9 +1,7 @@
-﻿using Core.Domain.Primitives;
-using Core.Infrastructure.Configuration;
+﻿using Core.Infrastructure.Configuration;
 using Core.Infrastructure.Extensions;
 using Core.Infrastructure.JsonConverters;
 using MassTransit;
-using MassTransit.Configuration;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using WebBff.ServiceInstallers.EventBus.Options;
@@ -93,10 +91,6 @@ namespace WebBff.ServiceInstallers.EventBus
                             AssemblyReference.Assembly);
 
                         bus.ConfigureEndpoints(context);
-
-                        bus.ConfigurePublish(pipe => pipe.AddPipeSpecification(
-                            new DelegatePipeSpecification<PublishContext<IEvent>>(ctx
-                            => ctx.CorrelationId = ctx.InitiatorId)));
                     });
                 });
     }

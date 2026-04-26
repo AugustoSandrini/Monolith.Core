@@ -28,7 +28,6 @@ namespace WebBff.Extensions
                     .Enrich.WithRequestUserId()
                     .Enrich.WithMachineName()
                     .Enrich.WithEnvironmentName()
-                    .Enrich.WithRequestUserId()
                     .Enrich.WithThreadId()
                     .Enrich.WithThreadName()
                     .Enrich.WithExceptionDetails()

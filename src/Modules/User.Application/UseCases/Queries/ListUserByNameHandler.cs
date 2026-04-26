@@ -1,6 +1,5 @@
 ﻿using Core.Application.Messaging;
 using Core.Shared.Results;
-using MassTransit;
 using User.Domain;
 using User.Persistence.Projections;
 using User.Shared.Queries;

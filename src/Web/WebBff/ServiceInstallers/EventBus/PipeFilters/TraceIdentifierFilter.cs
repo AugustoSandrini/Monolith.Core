@@ -1,13 +1,14 @@
-﻿using MassTransit;
+using CorrelationId.Abstractions;
+using MassTransit;
 
 namespace WebBff.ServiceInstallers.EventBus.PipeFilters
 {
-    public class TraceIdentifierFilter<T>(IHttpContextAccessor httpContextAccessor) : IFilter<PublishContext<T>>
+    public class TraceIdentifierFilter<T>(ICorrelationContextAccessor correlationContextAccessor) : IFilter<PublishContext<T>>
         where T : class
     {
         public Task Send(PublishContext<T> context, IPipe<PublishContext<T>> next)
         {
-            if (Guid.TryParse(httpContextAccessor.HttpContext?.TraceIdentifier, out var correlationId))
+            if (Guid.TryParse(correlationContextAccessor.CorrelationContext?.CorrelationId, out var correlationId))
                 context.CorrelationId = correlationId;
 
             return next.Send(context);

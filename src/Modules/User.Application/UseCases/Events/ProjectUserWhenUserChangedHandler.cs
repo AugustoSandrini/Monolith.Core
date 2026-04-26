@@ -6,7 +6,6 @@ using Serilog;
 namespace User.Application.UseCases.Events
 {
     using User.Application.Extensions;
-    using User.Domain.Aggregates;
     using User.Persistence.Projections;
 
     public interface IProjectUserWhenUserChangedHandler :

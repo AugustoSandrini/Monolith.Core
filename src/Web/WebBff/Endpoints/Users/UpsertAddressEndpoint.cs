@@ -1,6 +1,4 @@
 ﻿using Ardalis.ApiEndpoints;
-
-using Common.Policies;
 using Core.Endpoints.Extensions;
 using Core.Shared.Results;
 using User.Shared.Commands;

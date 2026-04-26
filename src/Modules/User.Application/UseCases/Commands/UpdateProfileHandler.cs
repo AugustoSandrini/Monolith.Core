@@ -1,6 +1,5 @@
 ﻿using Core.Application.Messaging;
 using Core.Shared.Results;
-using Serilog;
 using Core.Shared.Errors;
 using User.Application.Errors.Validation;
 

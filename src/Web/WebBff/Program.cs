@@ -2,7 +2,6 @@ using Common.DependencyInjection.Extensions;
 using Core.Infrastructure.Extensions;
 using CorrelationId;
 using HealthChecks.UI.Client;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.HttpLogging;
 using Serilog;
@@ -59,8 +58,6 @@ builder.Services.AddCommonServiceCollection(builder.Configuration);
 builder.Services
     .AddControllers()
     .AddApplicationPart(WebBff.AssemblyReference.Assembly);
-
-builder.Services.AddMiddlewares();
 
 var app = builder.Build();
 

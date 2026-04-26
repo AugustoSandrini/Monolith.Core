@@ -10,7 +10,6 @@ using Swashbuckle.AspNetCore.Annotations;
 using User.Shared.Queries;
 using User.Shared.Responses;
 using WebBff.Endpoints.Routes;
-using WebBff.Endpoints.Users.Requests;
 
 namespace WebBff.Endpoints.Users
 {
