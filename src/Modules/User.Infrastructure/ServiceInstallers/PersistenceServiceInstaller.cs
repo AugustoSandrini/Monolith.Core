@@ -39,7 +39,8 @@ namespace User.Infrastructure.ServiceInstallers
 
                     builder.UseMySql(
                             connectionString: connectionString,
-                            ServerVersion.AutoDetect(connectionString));
+                            ServerVersion.AutoDetect(connectionString),
+                            options => options.SchemaBehavior(Pomelo.EntityFrameworkCore.MySql.Infrastructure.MySqlSchemaBehavior.Ignore));
                 });
     }
 }

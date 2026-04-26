@@ -1,22 +1,34 @@
-﻿namespace Core.Application.Template
+﻿namespace Core.Application.Template;
+
+public interface IEmailTemplate
 {
-    public interface IEmailTemplate
+    string GetSubject(Dictionary<string, string>? subjectParameters = null);
+    string GetHtmlString();
+}
+
+public class EmailTemplate : IEmailTemplate
+{
+    protected EmailTemplate(string path, string subject = "")
     {
-        string GetHtmlString();
+        FilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
+        HtmlString = File.ReadAllText(FilePath);
+        Subject = subject;
     }
 
-    public class EmailTemplate : IEmailTemplate
+    private string FilePath { get; }
+    private string HtmlString { get; }
+    private string Subject { get; }
+
+    public string GetHtmlString() => HtmlString;
+
+    public string GetSubject(Dictionary<string, string>? subjectParameters = null)
     {
-        protected EmailTemplate(string path)
+        var result = Subject;
+        if (subjectParameters is not null)
         {
-            FilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
-            HtmlString = File.ReadAllText(FilePath);
+            foreach (var parameter in subjectParameters)
+                result = result.Replace(parameter.Key, parameter.Value);
         }
-
-        private string FilePath { get; set; }
-        private string HtmlString { get; set; }
-
-        public string GetHtmlString()
-            => HtmlString;
+        return result;
     }
 }
