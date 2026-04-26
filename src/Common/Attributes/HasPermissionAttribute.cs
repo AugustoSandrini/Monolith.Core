@@ -37,8 +37,8 @@ public class HasPermissionAttribute : Attribute, IAuthorizationFilter
 
         var roleClaim = user.Claims.FirstOrDefault(c => c.Type == "roles")?.Value;
 
-        if (!string.IsNullOrWhiteSpace(roleClaim) && roleClaim.Equals(Common.Policies.Policies.Backoffice, StringComparison.OrdinalIgnoreCase))
-            return;
+        //if (!string.IsNullOrWhiteSpace(roleClaim) && roleClaim.Equals(Common.Policies.Policies.Backoffice, StringComparison.OrdinalIgnoreCase))
+        //    return;//remover em breve
 
         if (!context.RouteData.Values.TryGetValue("id", out var idObj) || idObj is null)
         {
